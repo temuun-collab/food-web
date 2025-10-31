@@ -6,7 +6,6 @@ import { HeaderNextIconDark } from "../downicon/HeaderNextIconDark";
 import { OrdersIcon } from "../downicon/OrdersIcon";
 import { OrderIconDark } from "../downicon/OrderIconDark";
 import Link from "next/link";
-import { useState } from "react";
 
 export const Header = () => {
   const url = usePathname();
@@ -20,9 +19,9 @@ export const Header = () => {
         <div>
           <Headericon />
         </div>
-        <div className="flex flex-col w-[81px] h-[44px]">
-          <p className="text-black text-[18px] font-bold  h-[28px]">NomNom</p>
-          <p className="text-[#71717A] text-[12px]  h-[16px]">Swift delivery</p>
+        <div className="flex flex-col w-[81px] h-11">
+          <p className="text-black text-[18px] font-bold  h-7">NomNom</p>
+          <p className="text-[#71717A] text-[12px]  h-4">Swift delivery</p>
         </div>
       </div>
       <Link href="/foodMenu">
