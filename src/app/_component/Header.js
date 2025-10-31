@@ -1,8 +1,19 @@
+"use client";
+import { usePathname } from "next/navigation";
 import { Headericon } from "../downicon/headericon";
 import { HeaderNextIcon } from "../downicon/HeaderNextIcon";
+import { HeaderNextIconDark } from "../downicon/HeaderNextIconDark";
 import { OrdersIcon } from "../downicon/OrdersIcon";
+import { OrderIconDark } from "../downicon/OrderIconDark";
 import Link from "next/link";
+import { useState } from "react";
+
 export const Header = () => {
+  const url = usePathname();
+  const isOrder = url.includes("orders");
+  const isFoodMenu = url.includes("foodMenu");
+
+  console.log(url);
   return (
     <div className="w-[205px]  h-[1024px]  bg-white flex flex-col">
       <div className="flex w-[165px] h-[44px] m-4 gap-3 justify-center items-center">
@@ -14,20 +25,28 @@ export const Header = () => {
           <p className="text-[#71717A] text-[12px]  h-[16px]">Swift delivery</p>
         </div>
       </div>
-      <div className="flex w-[165px] h-[40px] m-4 gap-3 justify-center items-center">
-        <div>
-          <HeaderNextIcon />
+      <Link href="/foodMenu">
+        <div
+          className={`flex w-[165px] h-[40px] m-4 gap-3 justify-center items-center ${
+            isFoodMenu ? "bg-black text-white rounded-full" : "text-black "
+          }`}
+        >
+          <div>{isFoodMenu ? <HeaderNextIconDark /> : <HeaderNextIcon />}</div>
+
+          <p className="text-[14px]">Food menu</p>
         </div>
-        <Link href="/foodMenu">
-          <p className="text-black text-[14px]">Food menu</p>
-        </Link>
-      </div>
-      <div className="flex justify-center items-center">
-        <div className="flex w-[165px] h-[40px] gap-3 justify-center items-center bg-black rounded-full">
-          <OrdersIcon />
-          <p className="text-white text-[14px]">Orders</p>
+      </Link>
+
+      <Link href="/orders">
+        <div
+          className={`flex w-[165px] h-[40px] m-4 gap-3 justify-center items-center ${
+            isOrder ? "bg-black text-white rounded-full" : "text-black "
+          }`}
+        >
+          <div>{isOrder ? <OrdersIcon /> : <OrderIconDark />}</div>
+          <p className="text-[14px]">Orders</p>
         </div>
-      </div>
+      </Link>
     </div>
   );
 };
