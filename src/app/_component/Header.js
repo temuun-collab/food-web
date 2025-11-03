@@ -15,7 +15,7 @@ export const Header = () => {
   console.log(url);
   return (
     <div className="w-[205px]  h-[1024px]  bg-white flex flex-col">
-      <div className="flex w-[165px] h-[44px] m-4 gap-3 justify-center items-center">
+      <div className="flex w-[165px] h-11 m-4 gap-3 justify-center items-center">
         <div>
           <Headericon />
         </div>
@@ -26,7 +26,7 @@ export const Header = () => {
       </div>
       <Link href="/foodMenu">
         <div
-          className={`flex w-[165px] h-[40px] m-4 gap-3 justify-center items-center ${
+          className={`flex w-[165px] h-10 m-4 gap-3 justify-center items-center ${
             isFoodMenu ? "bg-black text-white rounded-full" : "text-black "
           }`}
         >
@@ -38,7 +38,7 @@ export const Header = () => {
 
       <Link href="/orders">
         <div
-          className={`flex w-[165px] h-[40px] m-4 gap-3 justify-center items-center ${
+          className={`flex w-[165px] h-10 m-4 gap-3 justify-center items-center ${
             isOrder ? "bg-black text-white rounded-full" : "text-black "
           }`}
         >

@@ -10,7 +10,6 @@ export const TableColumn = (props) => {
     date,
     total,
     address,
-    state,
     number,
     foodSrc,
     foodName,
