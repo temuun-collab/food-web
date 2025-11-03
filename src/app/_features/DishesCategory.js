@@ -2,6 +2,7 @@ import { FoodAdd } from "../_component/FoodAdd";
 import { AddIcon } from "../downicon/AddIcon";
 import { useState, useEffect } from "react";
 import { DeleteIcon } from "../downicon/DeleteIcon";
+import { CheckIcon } from "../downicon/CheckIcon";
 const options = {
   method: "GET",
   headers: {
@@ -17,7 +18,10 @@ export const DishesCategory = () => {
     const jsonData = await data.json();
     setCategories(jsonData);
   };
-
+  const [addCategory, setAddCategory] = useState(false);
+  const activeButtonaddCategory = () => {
+    setAddCategory(!addCategory);
+  };
   const [addNewCategory, setAddNewCategory] = useState(false);
   const activeButtonaddNewCategory = () => {
     setAddNewCategory(!addNewCategory);
@@ -62,17 +66,28 @@ export const DishesCategory = () => {
             <p className="text-[14px] text-black">Category name</p>
             <input
               placeholder="List ingredients..."
-              className="w-[412px] h-[38px] border rounded-md "
+              className="w-[412px] h-[38px] border rounded-md text-black"
             />
           </div>
 
           <div className="w-[412px] h-16 flex justify-end items-end">
-            <button className="w-[94px] h-10 bg-black rounded-md flex justify-center items-center text-white text-[14px]">
+            <button
+              className="w-[94px] h-10 bg-black rounded-md flex justify-center items-center text-white text-[14px]"
+              onClick={activeButtonaddCategory}
+            >
               Add category
             </button>
           </div>
         </div>
         // </div>
+      )}
+      {addCategory && (
+        <div className="w-[330px] h-12 bg-black rounded-md absolute  z-10 ml-100 flex justify-center items-center gap-2 mb-40">
+          <CheckIcon />
+          <p className="text-4 text-white">
+            New category is being added to the menu
+          </p>
+        </div>
       )}
     </div>
   );
