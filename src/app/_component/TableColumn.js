@@ -36,13 +36,13 @@ export const TableColumn = (props) => {
         <p className="text-[14px] text-[#71717A]">{email}</p>
       </div>
       <div
-        className="w-40 h-[52px] flex items-center  gap-21 relative"
+        className="w-40 h-[52px] flex items-center  gap-21 "
         onClick={activeButtonFoodMore}
       >
         <p className="text-[14px] text-[#71717A]">{foodsNumber} foods</p>
         <FoodMore />
         {foodMore && (
-          <div className="w-[263px] h-[97px] bg-white rounded-md border border-gray flex justify-center items-center absolute top-12">
+          <div className="w-[263px] h-[97px] bg-white rounded-md border border-gray flex justify-center items-center absolute top-75">
             <div className="flex flex-col">
               <div className="flex w-[230px] h-[30px] ">
                 <img className="w-8 h-[30px]" src={foodSrc} />

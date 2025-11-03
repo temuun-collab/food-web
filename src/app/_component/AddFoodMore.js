@@ -9,9 +9,9 @@ export const AddFoodMore = (props) => {
             className="w-[238px] h-[129px] rounded-md mt-2 "
             src={foodImgSrc}
           />
-          <button className="w-11 h-11 bg-black rounded-full flex justify-center items-center absolute -z-1 ml-7">
-            {/* <FoodEditIcon /> */}
-          </button>
+          {/* <button className="w-11 h-11 bg-black rounded-full flex justify-center items-center ">
+            <FoodEditIcon />
+          </button> */}
         </div>
 
         <div className="flex flex-col w-[238px] h-[70px]">
