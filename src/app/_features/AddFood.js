@@ -76,77 +76,79 @@ export const AddFood = (props) => {
         ))}
       </div>
       {addFoodNew && (
-        // <div className="fixed inset-0 hidden items-center justify-center bg-black bg-opacity-50 ">
-        <div className="w-[460px] h-[592px] bg-white rounded-md absolute  z-10 ml-80 border mb-50 flex flex-col justify-center items-center gap-6">
-          <div className="w-[412px] h-[52px] flex justify-between">
-            <p className="text-[18px] text-black">
-              Add new Dish to {foodAddMore}
-            </p>
-            <button
-              className="w-9 h-9 flex justify-center items-center rounded-full bg-gray-100"
-              onClick={() => {
-                setAddFoodNew(false);
-              }}
-            >
-              <DeleteIcon />
-            </button>
-          </div>
-          <div className="w-[412px] h-[60px] flex gap-6">
-            <div className="w-[194px] h-[60px] flex flex-col">
-              <p className="text-[14px] text-black">Food name</p>
-              <input
-                placeholder="Type food name"
-                className="w-[194px] h-[38px] border rounded-md text-black"
-              />
+        <div className="fixed  z-10 top-0 left-0 w-screen h-screen flex justify-center items-center bg-[rgba(0,_0,_0,_0.5)]">
+          <div className="w-[460px] h-[592px] bg-white rounded-md  border  flex flex-col justify-center items-center gap-6">
+            <div className="w-[412px] h-[52px] flex justify-between">
+              <p className="text-[18px] text-black">
+                Add new Dish to {foodAddMore}
+              </p>
+              <button
+                className="w-9 h-9 flex justify-center items-center rounded-full bg-gray-100"
+                onClick={() => {
+                  setAddFoodNew(false);
+                }}
+              >
+                <DeleteIcon />
+              </button>
             </div>
-            <div className="w-[194px] h-[60px] flex flex-col">
-              <p className="text-[14px] text-black">Food name</p>
-              <input
-                placeholder="Enter price..."
-                className="w-[194px] h-[38px] border rounded-md text-black"
-              />
-            </div>
-          </div>
-          <div className="w-[412px] h-28 flex gap-2 flex-col">
-            <p className="text-[14px] text-black">Ingredients</p>
-            <input
-              placeholder="List ingredients..."
-              className="w-[412px] h-[90px] border rounded-md text-black"
-            />
-          </div>
-          <div className="w-[412px] h-40 flex gap-2 flex-col">
-            <p className="text-[14px] text-black">Food image</p>
-            <div className="bg-[#2563EB33] opacity-20 w-[412px] h-[138px] border-2 border-dashed flex justify-center items-center">
-              <div className="w-[380px] h-[60px] flex flex-col items-center">
-                <button className="w-8 h-8 bg-white rounded-full flex justify-center items-center">
-                  <ImageIcon />
-                </button>
+            <div className="w-[412px] h-[60px] flex gap-6">
+              <div className="w-[194px] h-[60px] flex flex-col">
+                <p className="text-[14px] text-black">Food name</p>
                 <input
-                  type="file"
-                  className="text-black ml-27"
-                  // onChange={handleImageUploud}
-                  name="file"
+                  placeholder="Type food name"
+                  className="w-[194px] h-[38px] border rounded-md text-black"
+                />
+              </div>
+              <div className="w-[194px] h-[60px] flex flex-col">
+                <p className="text-[14px] text-black">Food name</p>
+                <input
+                  placeholder="Enter price..."
+                  className="w-[194px] h-[38px] border rounded-md text-black"
                 />
               </div>
             </div>
-          </div>
-          <div className="w-[412px] h-16 flex justify-end items-end">
-            <button
-              className="w-[94px] h-10 bg-black rounded-md flex justify-center items-center text-white text-[14px]"
-              onClick={activeButtonaddDishes}
-            >
-              Add Dish
-            </button>
+            <div className="w-[412px] h-28 flex gap-2 flex-col">
+              <p className="text-[14px] text-black">Ingredients</p>
+              <input
+                placeholder="List ingredients..."
+                className="w-[412px] h-[90px] border rounded-md text-black"
+              />
+            </div>
+            <div className="w-[412px] h-40 flex gap-2 flex-col">
+              <p className="text-[14px] text-black">Food image</p>
+              <div className="bg-[#2563EB33] opacity-20 w-[412px] h-[138px] border-2 border-dashed flex justify-center items-center">
+                <div className="w-[380px] h-[60px] flex flex-col items-center">
+                  <button className="w-8 h-8 bg-white rounded-full flex justify-center items-center">
+                    <ImageIcon />
+                  </button>
+                  <input
+                    type="file"
+                    className="text-black ml-27"
+                    // onChange={handleImageUploud}
+                    name="file"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="w-[412px] h-16 flex justify-end items-end">
+              <button
+                className="w-[94px] h-10 bg-black rounded-md flex justify-center items-center text-white text-[14px]"
+                onClick={activeButtonaddDishes}
+              >
+                Add Dish
+              </button>
+            </div>
           </div>
         </div>
-        // </div>
       )}
       {addDishes && (
-        <div className="w-[330px] h-12 bg-black rounded-md absolute  z-10 ml-100 flex justify-center items-center gap-2 mb-250">
-          <CheckIcon />
-          <p className="text-4 text-white">
-            New dish is being added to the menu
-          </p>
+        <div className="fixed z-10 top-0 left-0 w-screen h-screen flex justify-center mt-10 ">
+          <div className="w-[330px] h-12 bg-black rounded-md  flex justify-center items-center gap-2 ">
+            <CheckIcon />
+            <p className="text-4 text-white">
+              New dish is being added to the menu
+            </p>
+          </div>
         </div>
       )}
     </div>
