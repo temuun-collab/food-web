@@ -20,6 +20,7 @@ export default function login() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = async () => {
     try {
@@ -40,13 +41,13 @@ export default function login() {
       localStorage.setItem("token", token);
       router.push("/");
     } catch (err) {
-      console.log(err);
+      setError("Incorrect password. Please try again");
     }
   };
 
   return (
-    <div className="flex justify-center items-center h-screen w-screen">
-      <Card className="w-full max-w-sm">
+    <div className="flex justify-evenly items-center h-screen w-screen">
+      <Card className="w-full max-w-sm border-hidden">
         <CardHeader>
           <CardTitle>Login to your account</CardTitle>
           <CardDescription>
@@ -71,8 +72,16 @@ export default function login() {
                 />
               </div>
               <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  required
+                  onChange={(e) => setPassword(e.target.value)}
+                  className={`${error ? "border border-[#EF4444]" : "border"}`}
+                />
+                <div className="flex flex-col">
+                  <p className="text-[14px] text-[#EF4444] ">{error}</p>
                   <a
                     href="#"
                     className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
@@ -80,12 +89,6 @@ export default function login() {
                     Forgot your password?
                   </a>
                 </div>
-                <Input
-                  id="password"
-                  type="password"
-                  required
-                  onChange={(e) => setPassword(e.target.value)}
-                />
               </div>
             </div>
           </form>
@@ -99,6 +102,7 @@ export default function login() {
           </Button>
         </CardFooter>
       </Card>
+      <img src="./headerPhoto.png" className="w-[856px] h-[904px] rounded-md" />
     </div>
   );
 }

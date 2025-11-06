@@ -3,15 +3,7 @@ import { EditFood } from "../downicon/EditFood";
 import { useState } from "react";
 import { DeleteIcon } from "../downicon/DeleteIcon";
 import { TrashIcon } from "../downicon/TrashIcon";
-// import { useState, useEffect } from "react";
-// const options = {
-//   method: "GET",
-//   headers: {
-//     accept: "application/json",
-//     Authorization:
-//       "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4NzZiMzEwNzJlZDg5ODcwMzQxM2Y0NzkyYzZjZTdjYyIsIm5iZiI6MTczODAyNjY5NS44NCwic3ViIjoiNjc5ODJlYzc3MDJmNDkyZjQ3OGY2OGUwIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.k4OF9yGrhA2gZ4VKCH7KLnNBB2LIf1Quo9c3lGF6toE",
-//   },
-// };
+
 export const AddFoodMore = (props) => {
   const { foodImgSrc, foodName, foodPrice, ingredients } = props;
   const [editFood, setEditFood] = useState(false);
@@ -29,16 +21,7 @@ export const AddFoodMore = (props) => {
     setDeleteDishes(!deleteDishes);
   };
 
-  // const [categories, setCategories] = useState([]);
-  // const getData = async () => {
-  //   const data = await fetch(`http://localhost:8000/foodsCategory`, options);
-  //   const jsonData = await data.json();
-  //   setCategories(jsonData);
-  // };
-
-  // useEffect(() => {
-  //   getData();
-  // }, []);
+  
   return (
     <>
       <div className="w-[270px] h-[241px] border border-gray rounded-md flex justify-center items-center shadow-stone-600">

@@ -31,6 +31,23 @@ export const DishesCategory = () => {
     getData();
   }, []);
 
+  const handleAddFood = async () => {
+    try {
+      const res = await fetch("http://localhost:8000/food", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+        },
+        body: JSON.stringify({
+          foodName: addfood.foodName,
+        }),
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="w-[1171px] h-44 bg-white rounded-md flex flex-col justify-center gap-4">
       <p className="text-[20px]  font-bold text-black ml-3">Dishes category</p>
@@ -74,6 +91,7 @@ export const DishesCategory = () => {
               <button
                 className="w-[94px] h-10 bg-black rounded-md flex justify-center items-center text-white text-[14px]"
                 onClick={activeButtonaddCategory}
+                // onClick={handleAddFood}
               >
                 Add category
               </button>
@@ -85,7 +103,7 @@ export const DishesCategory = () => {
         <div className="fixed z-10 top-0 left-0 w-screen h-screen flex justify-center mt-10 ">
           <div className="w-[330px] h-12 bg-black rounded-md  flex justify-center items-center gap-2 ">
             <CheckIcon />
-            <p className="text-4 text-white">
+            <p className="text-[15px] text-white">
               New category is being added to the menu
             </p>
           </div>
