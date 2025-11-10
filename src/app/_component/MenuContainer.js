@@ -23,16 +23,18 @@ export const MenuContainer = (props) => {
   return (
     <div className="w-[1264px] h-[810px] flex flex-col gap-10 mt-10">
       <p className="text-white text-[30px] font-bold">{foodName}</p>
-      <div className="w-[1264px] max-h-[720px] grid grid-cols-3">
-        {foods.map((cur, index) => (
-          <ProductList
-            key={`foods-${index}`}
-            foodName={cur.foodName}
-            foodImgSrc={cur.image}
-            foodPrice={cur.price}
-            ingredients={cur.ingredients}
-          />
-        ))}
+      <div className=" max-h-[720px]">
+        <div className="w-[1264px] max-h-[720px] grid grid-cols-3">
+          {foods.map((cur, index) => (
+            <ProductList
+              key={`foods-${index}`}
+              foodName={cur.foodName}
+              foodImgSrc={cur.image}
+              foodPrice={cur.price}
+              ingredients={cur.ingredients}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

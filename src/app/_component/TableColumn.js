@@ -23,6 +23,7 @@ export const TableColumn = (props) => {
   const activeButtonStatus = () => {
     setStatus(!status);
   };
+
   return (
     <div className="w-[1171px] h-[52px] bg-[#F4F4F5CC] flex ">
       <div className="w-12 h-[52px] flex justify-center items-center">
@@ -40,7 +41,9 @@ export const TableColumn = (props) => {
         onClick={activeButtonFoodMore}
       >
         <p className="text-[14px] text-[#71717A]">{foodsNumber} foods</p>
+
         <FoodMore />
+
         {foodMore && (
           <div className="w-[263px] h-[97px] bg-white rounded-md border border-gray flex justify-center items-center absolute top-75">
             <div className="flex flex-col">

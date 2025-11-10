@@ -27,32 +27,46 @@ export const DishesCategory = () => {
     setAddNewCategory(!addNewCategory);
   };
 
+  const [addfood, setAddFood] = useState({
+    foodName: "",
+  });
+
   useEffect(() => {
     getData();
   }, []);
 
   const handleAddFood = async () => {
+    if (!addfood.foodName.trim()) {
+      alert("hoolnii neriig oruulna uu!");
+      return;
+    }
     try {
-      const res = await fetch("http://localhost:8000/food", {
+      const res = await fetch("http://localhost:8000/foodsCategory", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           accept: "application/json",
         },
         body: JSON.stringify({
-          foodName: addfood.foodName,
+          categoryName: addfood.foodName,
         }),
       });
+      await getData();
+      setAddNewCategory();
+      setAddFood({ categoryName: "" });
+      setAddCategory(false);
     } catch (err) {
       console.log(err);
     }
   };
 
   return (
-    <div className="w-[1171px] h-44 bg-white rounded-md flex flex-col justify-center gap-4">
-      <p className="text-[20px]  font-bold text-black ml-3">Dishes category</p>
+    <div className="w-[1171px] h-fit bg-white rounded-md flex flex-col justify-center gap-4">
+      <p className="text-[20px] font-bold text-black ml-3 mt-3">
+        Dishes category
+      </p>
 
-      <div className="w-[1123px] h-[84px] grid grid-cols-5 gap-3 ml-3">
+      <div className="w-[1123px] h-fit grid grid-cols-5 gap-3 ml-3 mb-3">
         {categories.map((cur, index) => (
           <FoodAdd key={`category-${index}`} foodName={cur.categoryName} />
         ))}
@@ -84,14 +98,16 @@ export const DishesCategory = () => {
               <input
                 placeholder="List ingredients..."
                 className="w-[412px] h-[38px] border rounded-md text-black"
+                onChange={(e) =>
+                  setAddFood({ ...addfood, foodName: e.target.value })
+                }
               />
             </div>
 
             <div className="w-[412px] h-16 flex justify-end items-end">
               <button
                 className="w-[94px] h-10 bg-black rounded-md flex justify-center items-center text-white text-[14px]"
-                onClick={activeButtonaddCategory}
-                // onClick={handleAddFood}
+                onClick={handleAddFood}
               >
                 Add category
               </button>

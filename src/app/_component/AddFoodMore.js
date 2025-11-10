@@ -5,7 +5,8 @@ import { DeleteIcon } from "../downicon/DeleteIcon";
 import { TrashIcon } from "../downicon/TrashIcon";
 
 export const AddFoodMore = (props) => {
-  const { foodImgSrc, foodName, foodPrice, ingredients } = props;
+  const { foodImgSrc, foodName, foodPrice, ingredients, category, categories } =
+    props;
   const [editFood, setEditFood] = useState(false);
   const activeButtonEditFood = () => {
     setEditFood(!editFood);
@@ -21,7 +22,6 @@ export const AddFoodMore = (props) => {
     setDeleteDishes(!deleteDishes);
   };
 
-  
   return (
     <>
       <div className="w-[270px] h-[241px] border border-gray rounded-md flex justify-center items-center shadow-stone-600">
@@ -29,10 +29,10 @@ export const AddFoodMore = (props) => {
           <div className="relative">
             <img
               className="w-[238px] h-[129px] rounded-md mt-2"
-              src={foodImgSrc}
+              src={foodImgSrc || null}
             />
             <button
-              className="w-11 h-11 bg-white rounded-full flex justify-center items-center absolute z-10 bottom-0 right-0 m-2"
+              className="w-11 h-11 bg-white rounded-full flex justify-center items-center absolute z-1 bottom-0 right-0 m-2"
               onClick={activeButtonEditFood}
             >
               <EditFood />
@@ -74,18 +74,17 @@ export const AddFoodMore = (props) => {
                 Dishes category
               </p>
 
-              {/* <select
+              <select
                 name="foodsName"
+                defaultValue={category.categoryName}
                 className="w-[288px] h-9 border rounded-md text-black"
               >
-                {categories.map((cur, index) => {
-                  return (
-                    <option key={`category-${index}`} value="foodName">
-                      {cur.categoryName}
-                    </option>
-                  );
-                })}
-              </select> */}
+                {categories.map((cur, index) => (
+                  <option key={`category-${index}`} value={cur.categoryName}>
+                    {cur.categoryName}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="w-[424px] h-[104px] flex items-center justify-between">
               <p className="w-30 h-4 text-[#71717A] text-[11px]">Ingredients</p>

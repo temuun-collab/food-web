@@ -29,9 +29,9 @@ export default function foodMenu(props) {
     <div className=" bg-white h-[100vh] flex items-center justify-center">
       <div className="w-[1440px] h-[1024px] flex flex-row">
         <Header />
-        <div className="w-[1235px] flex flex-col  h-[1024px] bg-[#F4F4F5CC]">
+        <div className="w-[1235px] flex flex-col  h-fit bg-[#F4F4F5CC]">
           <div className="flex justify-center items-center">
-            <div className="w-[1171px] h-[948px] bg-[#F4F4F5CC] flex mt-5 flex-col gap-4">
+            <div className="w-[1171px] h-fit bg-[#F4F4F5CC] flex mt-5 flex-col gap-4 mb-3">
               <div className="flex justify-end ">
                 <img className="w-9 h-9" src="./awatarImage.png" />
               </div>
