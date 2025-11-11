@@ -11,7 +11,8 @@ const options = {
       "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4NzZiMzEwNzJlZDg5ODcwMzQxM2Y0NzkyYzZjZTdjYyIsIm5iZiI6MTczODAyNjY5NS44NCwic3ViIjoiNjc5ODJlYzc3MDJmNDkyZjQ3OGY2OGUwIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.k4OF9yGrhA2gZ4VKCH7KLnNBB2LIf1Quo9c3lGF6toE",
   },
 };
-export const DishesCategory = () => {
+export const DishesCategory = (props) => {
+  const { foodCount } = props;
   const [categories, setCategories] = useState([]);
   const getData = async () => {
     const data = await fetch(`http://localhost:8000/foodsCategory`, options);
@@ -30,6 +31,7 @@ export const DishesCategory = () => {
   const [addfood, setAddFood] = useState({
     foodName: "",
   });
+  console.log(categories, "l;");
 
   useEffect(() => {
     getData();
@@ -67,8 +69,18 @@ export const DishesCategory = () => {
       </p>
 
       <div className="w-[1123px] h-fit grid grid-cols-5 gap-3 ml-3 mb-3">
+        <div className="h-9 w-auto border border-gray rounded-full flex justify-center items-center gap-2">
+          <p className="text-[14px] text-black">All Dishes</p>
+          <div className="min-w-[29px] h-5 bg-black rounded-full text-white flex justify-center items-center">
+            {categories.length}
+          </div>
+        </div>
         {categories.map((cur, index) => (
-          <FoodAdd key={`category-${index}`} foodName={cur.categoryName} />
+          <FoodAdd
+            key={`category-${index}`}
+            foodName={cur.categoryName}
+            foodCount={cur.food}
+          />
         ))}
 
         <button

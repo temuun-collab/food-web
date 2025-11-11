@@ -17,7 +17,7 @@ const options = {
 };
 export const AddFood = (props) => {
   const router = useRouter();
-  const { foodAddMore, foodCount } = props;
+  const { foodAddMore, categoryId, foodCount } = props;
   const UPLOAD_PRESET = "food-web";
 
   const CLOUD_NAME = "dtcnhf3eg";
@@ -27,18 +27,14 @@ export const AddFood = (props) => {
 
   const uploadToCloudinary = async (file) => {
     const formData = new FormData();
-
     formData.append("file", file);
-
     formData.append("upload_preset", UPLOAD_PRESET);
 
     try {
       const response = await fetch(
         `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
-
         {
           method: "POST",
-
           body: formData,
         }
       );
@@ -75,6 +71,7 @@ export const AddFood = (props) => {
     const data = await fetch(`http://localhost:8000/foods`, options);
     const jsonData = await data.json();
     setFoods(jsonData);
+    console.log("fooddata", jsonData);
   };
   const [addFoodNew, setAddFoodNew] = useState(false);
   const activeButtonaddFoodNew = () => {
@@ -95,11 +92,6 @@ export const AddFood = (props) => {
     const token = localStorage.getItem("token");
     console.log(token);
 
-    if (!token) {
-      alert("Та эхлээд нэвтрэх шаардлагатай.");
-      router.push("/login");
-      return;
-    }
     try {
       const res = await fetch("http://localhost:8000/foods", {
         method: "POST",
@@ -110,9 +102,10 @@ export const AddFood = (props) => {
         Authorization: `Bearer ${token}`,
         body: JSON.stringify({
           foodName: addfood.foodName,
-          image: addfood.foodImgSrc,
+          image: logoUrl,
           price: addfood.foodPrice,
           ingredients: addfood.ingredients,
+          category: categoryId,
         }),
       });
       setAddFood({
@@ -145,7 +138,7 @@ export const AddFood = (props) => {
   return (
     <div className="w-[1171px] h-auto bg-white rounded-md flex flex-col justify-center  gap-4">
       <p className="text-[20px]  font-bold text-black  mt-3 ml-3">
-        {foodAddMore} {foodCount}
+        {foodAddMore} ({foodCount})
       </p>
       <div className="w-[1123px] h-fit grid grid-cols-4 gap-3 ml-3 mb-3">
         <div className="w-[270px] h-[241px] border border-dashed border-[#EF4444] rounded-md flex justify-center items-center shadow-stone-600">
@@ -165,17 +158,19 @@ export const AddFood = (props) => {
           </div>
         </div>
 
-        {foods.map((cur, index) => (
-          <AddFoodMore
-            key={`foods-${index}`}
-            foodName={cur.foodName}
-            foodImgSrc={cur.image}
-            foodPrice={cur.price}
-            ingredients={cur.ingredients}
-            categories={categories}
-            category={cur.category}
-          />
-        ))}
+        {foods
+          .filter((food) => food.category._id === categoryId)
+          .map((cur, index) => (
+            <AddFoodMore
+              key={`foods-${index}`}
+              foodName={cur.foodName}
+              foodImgSrc={cur.image}
+              foodPrice={cur.price}
+              ingredients={cur.ingredients}
+              categories={categories}
+              category={cur.category}
+            />
+          ))}
         {/* {categories.map((cur, index) => (
           <AddFoodMore
             key={`categories-${index}`}
@@ -236,8 +231,8 @@ export const AddFood = (props) => {
             </div>
             <div className="w-[412px] h-40 flex gap-2 flex-col">
               <p className="text-[14px] text-black">Food image</p>
-              <div className="bg-[#2563EB33] opacity-20 w-[412px] h-[138px] border-2 border-dashed flex justify-center items-center">
-                <div className="w-[380px] h-[60px] flex flex-col items-center">
+              <div className="bg-gray-100  w-[412px] h-[138px] border-2 border-dashed flex justify-center items-center rounded-md">
+                <div className="w-[380px]  flex flex-col items-center">
                   {!logoUrl && (
                     <>
                       <button className="w-8 h-8 bg-white rounded-full flex justify-center items-center">
@@ -250,21 +245,34 @@ export const AddFood = (props) => {
                         onChange={handleLogoUpload}
                         name="file"
                       />
+                      {uploading && (
+                        <p className="text-black absolute z-10 mb-10">
+                          Uploading...
+                        </p>
+                      )}
                     </>
                   )}
                   {logoUrl && (
-                    <div className="bg-[#2563EB33] opacity-20 w-[412px] h-[138px] border-2 border-dashed flex justify-center items-center">
-                      <div className="w-[380px] h-[60px] flex flex-col items-center">
-                        <Image
-                          src={logoUrl}
-                          alt="Uploaded logo"
-                          width={300}
-                          height={60}
-                          className="rounded-md"
-                        />
-                        {uploading && (
-                          <p className="text-blue-600">Uploading...</p>
-                        )}
+                    <div className="relative  w-[412px] h-[138px]  ">
+                      <Image
+                        src={logoUrl}
+                        alt="Uploaded logo"
+                        fill
+                        className="rounded-md mb-10"
+                      />
+
+                      <div className="flex justify-end m-2">
+                        <button
+                          className="bg-black absolute z-10 w-4 h-4 rounded-full flex justify-center items-center"
+                          onClick={() => {
+                            setLogoUrl(false);
+                          }}
+                        >
+                          <img
+                            src="./remove.png"
+                            style={{ width: "8px", height: "8px" }}
+                          />
+                        </button>
                       </div>
                     </div>
                   )}
@@ -282,23 +290,6 @@ export const AddFood = (props) => {
           </div>
         </div>
       )}
-
-      {/* {logoUrl && (
-        <div className="mt-4">
-          <p className="text-green-600 font-semibold mb-2">Logo uploaded!</p>
-
-          <div className="relative w-64 h-64">
-            <Image
-              
-              alt="Uploaded logo"
-              fill
-              className="object-contain rounded border border-gray-300"
-            />
-          </div>
-
-          <p className="mt-2 text-sm text-gray-600 break-all">{logoUrl}</p>
-        </div>
-      )} */}
 
       {addDishes && (
         <div className="fixed z-10 top-0 left-0 w-screen h-screen flex justify-center mt-10 ">
