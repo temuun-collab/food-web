@@ -17,7 +17,7 @@ export const CardHeader = () => {
             </div>
           </div>
           <div className="mt-2.5">
-            <div className="w-44 h-9 bg-[#71717A] rounded-full flex justify-center items-center">
+            <div className="w-44 h-9 bg-[#71717A] rounded-full flex justify-center items-center cursor-pointer">
               <p className=" text-white text-[14px]">Change delivery state</p>
             </div>
           </div>

@@ -69,7 +69,7 @@ export const DishesCategory = (props) => {
       </p>
 
       <div className="w-[1123px] h-fit grid grid-cols-5 gap-3 ml-3 mb-3">
-        <div className="h-9 w-auto border border-gray rounded-full flex justify-center items-center gap-2">
+        <div className="h-9 min-w-[145px] border border-red-500 rounded-full flex justify-center items-center gap-2">
           <p className="text-[14px] text-black">All Dishes</p>
           <div className="min-w-[29px] h-5 bg-black rounded-full text-white flex justify-center items-center">
             {categories.length}
@@ -84,7 +84,7 @@ export const DishesCategory = (props) => {
         ))}
 
         <button
-          className="w-9 h-9 bg-[#EF4444] rounded-full flex justify-center items-center"
+          className="w-9 h-9 bg-[#EF4444] rounded-full flex justify-center items-center cursor-pointer"
           onClick={activeButtonaddNewCategory}
         >
           <AddIcon />
@@ -96,7 +96,7 @@ export const DishesCategory = (props) => {
             <div className="w-[412px] h-[52px] flex justify-between">
               <p className="text-[18px] text-black">Add new category</p>
               <button
-                className="w-9 h-9 flex justify-center items-center rounded-full bg-gray-100"
+                className="w-9 h-9 flex justify-center items-center rounded-full bg-gray-100 cursor-pointer"
                 onClick={() => {
                   setAddNewCategory(false);
                 }}
@@ -116,9 +116,9 @@ export const DishesCategory = (props) => {
               />
             </div>
 
-            <div className="w-[412px] h-16 flex justify-end items-end">
+            <div className="w-[412px] h-16 flex justify-end items-end ">
               <button
-                className="w-[94px] h-10 bg-black rounded-md flex justify-center items-center text-white text-[14px]"
+                className="w-[94px] h-10 bg-black rounded-md flex justify-center items-center text-white text-[14px] cursor-pointer"
                 onClick={handleAddFood}
               >
                 Add category

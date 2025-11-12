@@ -4,10 +4,16 @@ import { AddLocationIcon } from "../downicon/AddLocationIcon";
 import { Headericon } from "../downicon/headericon";
 import { LocationIcon } from "../downicon/LocationIcon";
 import { DeleteIcon } from "../downicon/DeleteIcon";
+import { ShoppingCart } from "../downicon/ShoppingCart";
+import { User } from "../downicon/UserIcon";
 export const UserHeader = () => {
   const [addLocation, setAddLocation] = useState(false);
   const activeButtonaddLocation = () => {
     setAddLocation(!addLocation);
+  };
+  const [user, setUser] = useState(false);
+  const activeButtonUser = () => {
+    setUser(!user);
   };
   return (
     <div className="w-[1440px] h-[172px] bg-[#18181B] flex justify-between items-center">
@@ -24,25 +30,38 @@ export const UserHeader = () => {
           <p className="text-[#71717A] text-[12px]  h-4">Swift delivery</p>
         </div>
       </div>
-      <div className="flex gap-3 ">
+      <div className="flex gap-3 mr-22">
         <div className="w-[251px] h-9 bg-white rounded-full flex gap-2 justify-center items-center">
           <LocationIcon />
           <p className="text-[11px] text-[#EF4444]">Delivery address:</p>
           <div
-            className="w-[95px] h-9 flex gap-2 justify-center items-center"
+            className="w-[95px] h-9 flex gap-2 justify-center items-center cursor-pointer"
             onClick={activeButtonaddLocation}
           >
             <p className="text-[11px] text-[#71717A]">Add Location</p>
             <AddLocationIcon />
           </div>
         </div>
-        <div className="w-auto h-9 bg-white rounded-full border-hidden flex justify-center items-center mr-22">
-          <p className="text-black text-[14px] ml-2">test@gmail.com</p>
-          <button className="bg-[#F4F4F5] w-20 h-7 text-[14px] flex justify-center items-center rounded-full cursor-pointer">
-            Sign Out
-          </button>
+        <div className="w-9 h-9 bg-white rounded-full flex justify-center items-center">
+          <ShoppingCart />
+        </div>
+        <div
+          className="w-9 h-9 bg-[#EF4444] rounded-full flex justify-center items-center"
+          onClick={activeButtonUser}
+        >
+          <User />
         </div>
       </div>
+      {user && (
+        <div className="fixed z-10 top-0 left-0 w-screen h-screen flex justify-center mt-30 ml-160">
+          <div className="min-w-[188px] h-[104px] bg-white rounded-md border-hidden flex flex-col items-center justify-center mr-22 gap-2">
+            <p className="text-black text-[19px] ">test@gmail.com</p>
+            <button className="bg-[#F4F4F5] w-20 h-9 text-[14px] flex justify-center items-center rounded-full cursor-pointer">
+              Sign Out
+            </button>
+          </div>
+        </div>
+      )}
       {addLocation && (
         <div className="fixed  z-50 top-0 left-0 w-screen h-screen flex justify-center items-center bg-[rgba(0,_0,_0,_0.5)]">
           <div className="w-[502px] h-[287px] bg-white rounded-md gap-4 border  flex flex-col justify-center items-center">
@@ -51,7 +70,7 @@ export const UserHeader = () => {
                 Please write your delivery address!
               </p>
               <button
-                className="w-9 h-9 flex justify-center items-center rounded-full bg-gray-100"
+                className="w-9 h-9 flex justify-center items-center rounded-full bg-gray-100 cursor-pointer"
                 onClick={() => {
                   setAddLocation(false);
                 }}
@@ -62,19 +81,19 @@ export const UserHeader = () => {
 
             <input
               placeholder="Please share your complete address"
-              className="w-[454px] h-20 border rounded-md text-black"
+              className="w-[454px] h-20 border rounded-md text-black "
             />
 
             <div className="w-[454px] h-16 flex justify-end items-end gap-2">
               <button
-                className="w-[79px] h-10 bg-white border rounded-md flex justify-center items-center text-black text-[14px]"
+                className="w-[79px] h-10 bg-white border rounded-md flex justify-center items-center text-black text-[14px] cursor-pointer"
                 onClick={() => {
                   setAddLocation(false);
                 }}
               >
                 Cancel
               </button>
-              <button className="w-[115px] h-10 bg-black rounded-md flex justify-center items-center text-white text-[14px]">
+              <button className="w-[115px] h-10 bg-black rounded-md flex justify-center items-center text-white text-[14px] cursor-pointer">
                 Add category
               </button>
             </div>

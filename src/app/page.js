@@ -34,17 +34,17 @@ export default function () {
       <div className="flex flex-col">
         <UserHeader />
         <img src="./BG.png" className="w-[1440px] h-[570px] " />
-        <div className="bg-[#404040] w-[1440px] h-auto flex justify-center items-center">
+        <div className="bg-[#404040] w-[1440px] h-auto flex flex-col items-center">
           {categories.map((cur, index) => (
             <MenuContainer
               key={`category-${index}`}
               foodName={cur.categoryName}
+              categoryId={cur._id}
             />
           ))}
         </div>
-        {categories.map((cur, index) => (
-          <Footer key={`category-${index}`} foodName={cur.categoryName} />
-        ))}
+
+        <Footer />
       </div>
     </div>
   );

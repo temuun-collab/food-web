@@ -5,9 +5,17 @@ import { DeleteIcon } from "../downicon/DeleteIcon";
 import { TrashIcon } from "../downicon/TrashIcon";
 
 export const AddFoodMore = (props) => {
-  const { foodImgSrc, foodName, foodPrice, ingredients, category, categories } =
-    props;
+  const {
+    foodImgSrc,
+    foodName,
+    foodPrice,
+    ingredients,
+    category,
+    categories,
+    categoryId,
+  } = props;
   const [editFood, setEditFood] = useState(false);
+
   const activeButtonEditFood = () => {
     setEditFood(!editFood);
   };
@@ -21,7 +29,86 @@ export const AddFoodMore = (props) => {
   const activeButtonDeleteDishes = () => {
     setDeleteDishes(!deleteDishes);
   };
+  const [logoUrl, setLogoUrl] = useState("");
 
+  const [addfood, setAddFood] = useState({
+    foodName: foodName || "",
+    foodImgSrc: image || "",
+    foodPrice: price || "",
+    ingredients: ingredients || "",
+    categoryId: id || "",
+  });
+  const handleEtidFood = async () => {
+    const token = localStorage.getItem("token");
+    console.log(token);
+
+    try {
+      const res = await fetch("http://localhost:8000/foods", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+        },
+        Authorization: `Bearer ${token}`,
+        body: JSON.stringify({
+          foodName: addfood.foodName,
+          image: logoUrl,
+          price: addfood.foodPrice,
+          ingredients: addfood.ingredients,
+          id: categoryId,
+        }),
+      });
+
+      setEditFood(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  // const handleDeleteFood = async () => {
+  //   const token = localStorage.getItem("token");
+  //   console.log(token);
+
+  //   try {
+  //     const res = await fetch("http://localhost:8000/foods", {
+  //       method: "DELETE",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         accept: "application/json",
+  //       },
+  //       Authorization: `Bearer ${token}`,
+  //       body: JSON.stringify({
+  //         foodName: addfood.foodName,
+  //         image: logoUrl,
+  //         price: addfood.foodPrice,
+  //         ingredients: addfood.ingredients,
+  //         id: categoryId,
+  //       }),
+  //     });
+  //     setAddFood({
+  //       foodName: "",
+  //       foodImgSrc: "",
+  //       foodPrice: "",
+  //       ingredients: "",
+  //     });
+
+  //     setEditFood(false);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+  const handleLogoUpload = async (event) => {
+    const file = event.target.files[0];
+
+    if (!file) return;
+
+    try {
+      const url = await uploadToCloudinary(file);
+
+      setLogoUrl(url);
+    } catch (err) {
+      console.log("Failed to upload logo: " + err.message);
+    }
+  };
   return (
     <>
       <div className="w-[270px] h-[241px] border border-gray rounded-md flex justify-center items-center shadow-stone-600">
@@ -32,7 +119,7 @@ export const AddFoodMore = (props) => {
               src={foodImgSrc || null}
             />
             <button
-              className="w-11 h-11 bg-white rounded-full flex justify-center items-center absolute z-1 bottom-0 right-0 m-2"
+              className="w-11 h-11 bg-white rounded-full flex justify-center items-center absolute z-1 bottom-0 right-0 m-2 cursor-pointer"
               onClick={activeButtonEditFood}
             >
               <EditFood />
@@ -54,7 +141,7 @@ export const AddFoodMore = (props) => {
             <div className="w-[424px] h-9 flex justify-between">
               <p className="text-[18px] text-black">Dishes info</p>
               <button
-                className="w-9 h-9 flex justify-center items-center rounded-full bg-gray-100"
+                className="w-9 h-9 flex justify-center items-center rounded-full bg-gray-100 cursor-pointer"
                 onClick={() => {
                   setEditFood(false);
                 }}
@@ -102,18 +189,26 @@ export const AddFoodMore = (props) => {
             </div>
             <div className="w-[424px] h-[140px] flex items-center justify-between">
               <p className="w-30 h-4 text-[#71717A] text-[11px]">Image</p>
-              <div className=" w-[288px] h-[116px] border-2 ">{foodImgSrc}</div>
+              <img
+                className=" w-[288px] h-[116px] border-2 "
+                src={foodImgSrc || null}
+                alt="foodSrc"
+                onError={(e) => (e.currentTarget.src = "/img")}
+                onChange={handleLogoUpload}
+              ></img>
             </div>
             <div className="w-[424px] h-16 flex justify-between items-end">
               <button
-                className="w-12 h-10 border border-[#EF4444] rounded-md flex justify-center items-center"
-                onClick={activeButtonDeleteDishes}
+                className="w-12 h-10 border border-[#EF4444] rounded-md flex justify-center items-center cursor-pointer"
+                // onClick={handleDeleteFood}
+                // onClick={activeButtonDeleteDishes}
               >
                 <TrashIcon />
               </button>
               <button
-                className="w-[126px] h-10 bg-black rounded-md flex justify-center items-center text-white text-[14px]"
-                onClick={activeButtonSaveChanges}
+                className="w-[126px] h-10 bg-black rounded-md flex justify-center items-center text-white text-[14px] cursor-pointer"
+                onClick={handleEtidFood}
+                // onClick={activeButtonSaveChanges}
               >
                 Save changes
               </button>
@@ -127,6 +222,20 @@ export const AddFoodMore = (props) => {
             <div className="w-[332px] h-11">
               <p className="text-[14px] text-black font-bold">
                 Dish successfully deleted.
+              </p>
+              <p className="text-[14px] text-black">
+                Would you like to undo this action?
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+      {saveChanges && (
+        <div className="fixed z-10 top-0 left-0 w-screen h-screen flex justify-center mt-10 ">
+          <div className="w-[388px] h-[92px] bg-white rounded-md flex border justify-center items-center gap-2 ">
+            <div className="w-[332px] h-11">
+              <p className="text-[14px] text-black font-bold">
+                Dish successfully save.
               </p>
               <p className="text-[14px] text-black">
                 Would you like to undo this action?

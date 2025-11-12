@@ -10,30 +10,43 @@ const options = {
   },
 };
 export const MenuContainer = (props) => {
+  const { categoryId, foodName } = props;
+  const [categories, setCategories] = useState([]);
   const [foods, setFoods] = useState([]);
   const getData = async () => {
     const data = await fetch(`http://localhost:8000/foods`, options);
     const jsonData = await data.json();
     setFoods(jsonData);
   };
+  const foodsCategory = async () => {
+    const data = await fetch(`http://localhost:8000/foodsCategory`, options);
+    const jsonData = await data.json();
+    setCategories(jsonData);
+  };
+
+  useEffect(() => {
+    foodsCategory();
+  }, []);
   useEffect(() => {
     getData();
   }, []);
-  const { foodName } = props;
+
   return (
-    <div className="w-[1264px] h-[810px] flex flex-col gap-10 mt-10">
+    <div className="w-[1264px] h-auto flex flex-col gap-10 mt-10 mb-10">
       <p className="text-white text-[30px] font-bold">{foodName}</p>
       <div className=" max-h-[720px]">
         <div className="w-[1264px] max-h-[720px] grid grid-cols-3">
-          {foods.map((cur, index) => (
-            <ProductList
-              key={`foods-${index}`}
-              foodName={cur.foodName}
-              foodImgSrc={cur.image}
-              foodPrice={cur.price}
-              ingredients={cur.ingredients}
-            />
-          ))}
+          {foods
+            .filter((food) => food.category._id === categoryId)
+            .map((cur, index) => (
+              <ProductList
+                key={`foods-${index}`}
+                foodName={cur.foodName}
+                foodImgSrc={cur.image}
+                foodPrice={cur.price}
+                ingredients={cur.ingredients}
+              />
+            ))}
         </div>
       </div>
     </div>

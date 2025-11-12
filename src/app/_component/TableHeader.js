@@ -6,7 +6,7 @@ export const TableHeader = () => {
     <div className="w-[1171px] h-[52px] bg-[#F4F4F5CC] flex ">
       <div className="w-12 h-[52px] flex justify-center items-center">
         {/* <TableIcon /> */}
-        <input type="checkbox" className="w-4 h-4" />
+        <input type="checkbox" className="w-4 h-4 cursor-pointer" />
       </div>
       <div className="w-14 h-[52px] flex justify-center items-center">
         <p className="text-[14px] text-[#09090B]">№</p>
@@ -17,7 +17,7 @@ export const TableHeader = () => {
       <div className="w-40 h-[52px] flex items-center ">
         <p className="text-[14px] text-[#71717A]">Food</p>
       </div>
-      <div className="w-40 h-[52px] flex gap-25 items-center ">
+      <div className="w-40 h-[52px] flex gap-25 items-center cursor-pointer">
         <p className="text-[14px] text-[#71717A]">Date</p>
         <DateIcon />
       </div>

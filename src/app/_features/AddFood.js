@@ -145,7 +145,7 @@ export const AddFood = (props) => {
           <div className="flex flex-col gap-5">
             <div className="w-[270px] flex flex-col items-center gap-2">
               <button
-                className="w-9 h-9 bg-[#EF4444] rounded-full flex justify-center items-center"
+                className="w-9 h-9 bg-[#EF4444] rounded-full flex justify-center items-center cursor-pointer"
                 onClick={activeButtonaddFoodNew}
               >
                 <AddIcon />
@@ -169,14 +169,9 @@ export const AddFood = (props) => {
               ingredients={cur.ingredients}
               categories={categories}
               category={cur.category}
+              categoryId={cur._id}
             />
           ))}
-        {/* {categories.map((cur, index) => (
-          <AddFoodMore
-            key={`categories-${index}`}
-            categoryNames={cur.categoryName}
-          />
-        ))} */}
       </div>
       {addFoodNew && (
         <div className="fixed  z-50 top-0 left-0 w-screen h-screen flex justify-center items-center bg-[rgba(0,_0,_0,_0.5)]">
@@ -186,7 +181,7 @@ export const AddFood = (props) => {
                 Add new Dish to {foodAddMore}
               </p>
               <button
-                className="w-9 h-9 flex justify-center items-center rounded-full bg-gray-100"
+                className="w-9 h-9 flex justify-center items-center rounded-full bg-gray-100 cursor-pointer"
                 onClick={() => {
                   setAddFoodNew(false);
                 }}
@@ -240,7 +235,7 @@ export const AddFood = (props) => {
                       </button>
                       <input
                         type="file"
-                        className="text-black ml-27"
+                        className="text-black ml-27 cursor-pointer"
                         accept="image/*"
                         onChange={handleLogoUpload}
                         name="file"
@@ -281,7 +276,7 @@ export const AddFood = (props) => {
             </div>
             <div className="w-[412px] h-16 flex justify-end items-end">
               <button
-                className="w-[94px] h-10 bg-black rounded-md flex justify-center items-center text-white text-[14px]"
+                className="w-[94px] h-10 bg-black rounded-md flex justify-center items-center text-white text-[14px] cursor-pointer"
                 onClick={handleAddFood}
               >
                 Add Dish

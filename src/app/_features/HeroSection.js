@@ -22,15 +22,6 @@ export const HeroSection = () => {
   useEffect(() => {
     getData();
   }, []);
-  // const [foods, setFoods] = useState([]);
-  // const allFoods = async () => {
-  //   const data = await fetch(`http://localhost:8000/foods`, options);
-  //   const jsonData = await data.json();
-  //   setFoods(jsonData);
-  // };
-  // useEffect(() => {
-  //   allFoods();
-  // }, []);
 
   return (
     <div className="w-[1171px] h-[948px] bg-[#F4F4F5CC] flex mt-5 flex-col ">
@@ -48,13 +39,6 @@ export const HeroSection = () => {
             total={cur.totalPrice}
           />
         ))}
-        {/* {foods.map((cur, index) => {
-          <TableColumn
-            key={`foods-${index}`}
-            foodName={cur.foodName}
-            foodImgSrc={cur.image}
-          />;
-        })} */}
       </div>
 
       <Pagination />
