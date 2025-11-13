@@ -56,7 +56,7 @@ export const AddFood = (props) => {
 
     try {
       const url = await uploadToCloudinary(file);
-
+      setAddFood((prev) => ({ ...prev, foodImgSrc: url }));
       setLogoUrl(url);
     } catch (err) {
       console.log("Failed to upload logo: " + err.message);
@@ -158,7 +158,7 @@ export const AddFood = (props) => {
         </div>
 
         {foods
-          .filter((food) => food.category._id === categoryId)
+          .filter((food) => food && food.category._id === categoryId)
           .map((cur, index) => (
             <AddFoodMore
               key={`foods-${index}`}
@@ -229,12 +229,12 @@ export const AddFood = (props) => {
                 <div className="w-[380px]  flex flex-col items-center">
                   {!logoUrl && (
                     <>
-                      <button className="w-8 h-8 bg-white rounded-full flex justify-center items-center">
+                      <button className="w-8 h-8 bg-white rounded-full flex justify-center items-center absolute mt-13">
                         <ImageIcon />
                       </button>
                       <input
                         type="file"
-                        className="text-black ml-27 cursor-pointer"
+                        className="text-gray-100 cursor-pointer w-[412px] h-[138px]"
                         accept="image/*"
                         onChange={handleLogoUpload}
                         name="file"
@@ -264,7 +264,10 @@ export const AddFood = (props) => {
                         >
                           <img
                             src="./remove.png"
-                            style={{ width: "8px", height: "8px" }}
+                            style={{
+                              width: "8px",
+                              height: "8px",
+                            }}
                           />
                         </button>
                       </div>

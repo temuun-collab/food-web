@@ -61,8 +61,8 @@ export const AddFoodMore = (props) => {
         headers: {
           "Content-Type": "application/json",
           accept: "application/json",
+          Authorization: ` ${token}`,
         },
-        Authorization: `Bearer ${token}`,
         body: JSON.stringify({
           foodName: addfood.foodName,
           image: addfood.foodImgSrc,
@@ -80,38 +80,29 @@ export const AddFoodMore = (props) => {
   useEffect(() => {
     getData();
   }, []);
-  // const handleDeleteFood = async () => {
-  //   const token = localStorage.getItem("token");
-  //   console.log(token);
+  const handleDeleteFood = async () => {
+    const token = localStorage.getItem("token");
+    console.log(token);
 
-  //   try {
-  //     const res = await fetch("http://localhost:8000/foods", {
-  //       method: "DELETE",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         accept: "application/json",
-  //       },
-  //       Authorization: `Bearer ${token}`,
-  //       body: JSON.stringify({
-  //         foodName: addfood.foodName,
-  //         image: logoUrl,
-  //         price: addfood.foodPrice,
-  //         ingredients: addfood.ingredients,
-  //         id: categoryId,
-  //       }),
-  //     });
-  //     setAddFood({
-  //       foodName: "",
-  //       foodImgSrc: "",
-  //       foodPrice: "",
-  //       ingredients: "",
-  //     });
-
-  //     setEditFood(false);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
+    try {
+      const res = await fetch("http://localhost:8000/foods", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+          authorization: `${token}`,
+        },
+        body: JSON.stringify({
+          id: categoryId,
+        }),
+      });
+      const data = await res.json();
+      if (data.token) localStorage.setItem("token", data.token);
+      setEditFood(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const handleLogoUpload = async (event) => {
     const file = event.target.files[0];
 
@@ -226,7 +217,7 @@ export const AddFoodMore = (props) => {
             <div className="w-[424px] h-16 flex justify-between items-end">
               <button
                 className="w-12 h-10 border border-[#EF4444] rounded-md flex justify-center items-center cursor-pointer"
-                // onClick={handleDeleteFood}
+                onClick={handleDeleteFood}
                 // onClick={activeButtonDeleteDishes}
               >
                 <TrashIcon />
