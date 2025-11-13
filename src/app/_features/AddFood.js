@@ -71,7 +71,6 @@ export const AddFood = (props) => {
     const data = await fetch(`http://localhost:8000/foods`, options);
     const jsonData = await data.json();
     setFoods(jsonData);
-    console.log("fooddata", jsonData);
   };
   const [addFoodNew, setAddFoodNew] = useState(false);
   const activeButtonaddFoodNew = () => {

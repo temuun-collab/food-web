@@ -31,7 +31,7 @@ export const ProductList = (props) => {
         <div className="relative">
           <img
             className="w-[365px] h-[210px] rounded-md mt-2"
-            src={foodImgSrc}
+            src={foodImgSrc || null}
           />
           {/* {falsecheckFood && ( */}
           <button

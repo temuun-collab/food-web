@@ -1,9 +1,16 @@
 "use client";
 import { EditFood } from "../downicon/EditFood";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DeleteIcon } from "../downicon/DeleteIcon";
 import { TrashIcon } from "../downicon/TrashIcon";
-
+const options = {
+  method: "GET",
+  headers: {
+    accept: "application/json",
+    Authorization:
+      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4NzZiMzEwNzJlZDg5ODcwMzQxM2Y0NzkyYzZjZTdjYyIsIm5iZiI6MTczODAyNjY5NS44NCwic3ViIjoiNjc5ODJlYzc3MDJmNDkyZjQ3OGY2OGUwIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.k4OF9yGrhA2gZ4VKCH7KLnNBB2LIf1Quo9c3lGF6toE",
+  },
+};
 export const AddFoodMore = (props) => {
   const {
     foodImgSrc,
@@ -30,13 +37,19 @@ export const AddFoodMore = (props) => {
     setDeleteDishes(!deleteDishes);
   };
   const [logoUrl, setLogoUrl] = useState("");
+  const [foods, setFoods] = useState([]);
 
+  const getData = async () => {
+    const data = await fetch(`http://localhost:8000/foods`, options);
+    const jsonData = await data.json();
+    setFoods(jsonData);
+  };
   const [addfood, setAddFood] = useState({
     foodName: foodName || "",
-    foodImgSrc: image || "",
-    foodPrice: price || "",
+    foodImgSrc: logoUrl || "",
+    foodPrice: foodPrice || "",
     ingredients: ingredients || "",
-    categoryId: id || "",
+    categoryId: categoryId || "",
   });
   const handleEtidFood = async () => {
     const token = localStorage.getItem("token");
@@ -52,18 +65,21 @@ export const AddFoodMore = (props) => {
         Authorization: `Bearer ${token}`,
         body: JSON.stringify({
           foodName: addfood.foodName,
-          image: logoUrl,
+          image: addfood.foodImgSrc,
           price: addfood.foodPrice,
           ingredients: addfood.ingredients,
           id: categoryId,
         }),
       });
-
+      await getData();
       setEditFood(false);
     } catch (err) {
       console.log(err);
     }
   };
+  useEffect(() => {
+    getData();
+  }, []);
   // const handleDeleteFood = async () => {
   //   const token = localStorage.getItem("token");
   //   console.log(token);
@@ -105,6 +121,7 @@ export const AddFoodMore = (props) => {
       const url = await uploadToCloudinary(file);
 
       setLogoUrl(url);
+      setAddFood({ ...foodImgSrc, foodImgSrc: url });
     } catch (err) {
       console.log("Failed to upload logo: " + err.message);
     }
@@ -154,6 +171,9 @@ export const AddFoodMore = (props) => {
               <input
                 className="w-[288px] h-9 border rounded-md text-black"
                 defaultValue={foodName}
+                onChange={(e) =>
+                  setAddFood({ ...addfood, foodName: e.target.value })
+                }
               />
             </div>
             <div className="w-[424px] h-[60px] flex items-center justify-between">
@@ -178,6 +198,9 @@ export const AddFoodMore = (props) => {
               <input
                 className="w-[288px] h-20 border rounded-md text-black "
                 defaultValue={ingredients}
+                onChange={(e) =>
+                  setAddFood({ ...addfood, ingredients: e.target.value })
+                }
               />
             </div>
             <div className="w-[424px] h-[60px] flex items-center justify-between">
@@ -185,6 +208,9 @@ export const AddFoodMore = (props) => {
               <input
                 className="w-[288px] h-9 border rounded-md text-black"
                 defaultValue={foodPrice}
+                onChange={(e) =>
+                  setAddFood({ ...addfood, foodPrice: e.target.value })
+                }
               />
             </div>
             <div className="w-[424px] h-[140px] flex items-center justify-between">
@@ -193,7 +219,7 @@ export const AddFoodMore = (props) => {
                 className=" w-[288px] h-[116px] border-2 "
                 src={foodImgSrc || null}
                 alt="foodSrc"
-                onError={(e) => (e.currentTarget.src = "/img")}
+                onError={(e) => (e.currentTarget.src = logoUrl)}
                 onChange={handleLogoUpload}
               ></img>
             </div>
@@ -216,6 +242,7 @@ export const AddFoodMore = (props) => {
           </div>
         </div>
       )}
+
       {deleteDishes && (
         <div className="fixed z-10 top-0 left-0 w-screen h-screen flex justify-center mt-10 ">
           <div className="w-[388px] h-[92px] bg-white rounded-md flex border justify-center items-center gap-2 ">
