@@ -39,7 +39,7 @@ export default function foodMenu() {
                 <AddFood
                   key={`categories-${index}`}
                   foodAddMore={cur.categoryName}
-                  categoryId={cur._id}
+                  categories={cur.category}
                   foodCount={cur.food}
                 />
               ))}

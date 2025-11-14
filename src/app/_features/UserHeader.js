@@ -6,6 +6,7 @@ import { LocationIcon } from "../downicon/LocationIcon";
 import { DeleteIcon } from "../downicon/DeleteIcon";
 import { ShoppingCart } from "../downicon/ShoppingCart";
 import { User } from "../downicon/UserIcon";
+import { ShoppingCartIcon } from "../downicon/ShoppingCartIcon";
 export const UserHeader = () => {
   const [addLocation, setAddLocation] = useState(false);
   const activeButtonaddLocation = () => {
@@ -14,6 +15,10 @@ export const UserHeader = () => {
   const [user, setUser] = useState(false);
   const activeButtonUser = () => {
     setUser(!user);
+  };
+  const [shoppingCart, setShoppingCart] = useState(false);
+  const activeButtonShoppingCart = () => {
+    setShoppingCart(!shoppingCart);
   };
   return (
     <div className="w-[1440px] h-[172px] bg-[#18181B] flex justify-between items-center">
@@ -42,7 +47,10 @@ export const UserHeader = () => {
             <AddLocationIcon />
           </div>
         </div>
-        <div className="w-9 h-9 bg-white rounded-full flex justify-center items-center">
+        <div
+          className="w-9 h-9 bg-white rounded-full flex justify-center items-center"
+          onClick={activeButtonShoppingCart}
+        >
           <ShoppingCart />
         </div>
         <div
@@ -77,6 +85,34 @@ export const UserHeader = () => {
               >
                 <DeleteIcon />
               </button>
+            </div>
+
+            <input
+              placeholder="Please share your complete address"
+              className="w-[454px] h-20 border rounded-md text-black "
+            />
+
+            <div className="w-[454px] h-16 flex justify-end items-end gap-2">
+              <button
+                className="w-[79px] h-10 bg-white border rounded-md flex justify-center items-center text-black text-[14px] cursor-pointer"
+                onClick={() => {
+                  setAddLocation(false);
+                }}
+              >
+                Cancel
+              </button>
+              <button className="w-[115px] h-10 bg-black rounded-md flex justify-center items-center text-white text-[14px] cursor-pointer">
+                Add category
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {shoppingCart && (
+        <div className="fixed  z-50 top-0 left-0 w-screen h-screen flex justify-center items-center bg-[rgba(0,_0,_0,_0.5)]">
+          <div className="w-[535px] h-[1024px] bg-[#404040] rounded-md gap-6 border  flex flex-col justify-center items-center">
+            <div className="w-[471px] h-9 flex justify-between">
+              <ShoppingCartIcon />
             </div>
 
             <input

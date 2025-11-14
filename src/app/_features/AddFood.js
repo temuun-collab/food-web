@@ -17,7 +17,7 @@ const options = {
 };
 export const AddFood = (props) => {
   const router = useRouter();
-  const { foodAddMore, categoryId, foodCount } = props;
+  const { foodAddMore, categories, foodCount } = props;
   const UPLOAD_PRESET = "food-web";
 
   const CLOUD_NAME = "dtcnhf3eg";
@@ -104,7 +104,7 @@ export const AddFood = (props) => {
           image: logoUrl,
           price: addfood.foodPrice,
           ingredients: addfood.ingredients,
-          category: categoryId,
+          category: categories,
         }),
       });
       setAddFood({
@@ -120,11 +120,11 @@ export const AddFood = (props) => {
       console.log(err);
     }
   };
-  const [categories, setCategories] = useState([]);
+  const [categoriesFood, setCategoriesFood] = useState([]);
   const foodsCategory = async () => {
     const data = await fetch(`http://localhost:8000/foodsCategory`, options);
     const jsonData = await data.json();
-    setCategories(jsonData);
+    setCategoriesFood(jsonData);
   };
 
   useEffect(() => {
@@ -158,7 +158,7 @@ export const AddFood = (props) => {
         </div>
 
         {foods
-          .filter((food) => food && food.category._id === categoryId)
+          .filter((food) => food && food.category._id === categories)
           .map((cur, index) => (
             <AddFoodMore
               key={`foods-${index}`}
@@ -166,9 +166,9 @@ export const AddFood = (props) => {
               foodImgSrc={cur.image}
               foodPrice={cur.price}
               ingredients={cur.ingredients}
-              categories={categories}
+              categories={categoriesFood}
               category={cur.category}
-              categoryId={cur._id}
+              foodId={cur._id}
             />
           ))}
       </div>

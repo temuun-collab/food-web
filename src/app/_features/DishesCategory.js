@@ -31,7 +31,6 @@ export const DishesCategory = (props) => {
   const [addfood, setAddFood] = useState({
     foodName: "",
   });
-  console.log(categories, "l;");
 
   useEffect(() => {
     getData();
