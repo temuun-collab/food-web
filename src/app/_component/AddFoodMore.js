@@ -37,9 +37,6 @@ export const AddFoodMore = (props) => {
   const activeButtonDeleteDishes = () => {
     setDeleteDishes(!deleteDishes);
   };
-  const UPLOAD_PRESET = "food-web";
-
-  const CLOUD_NAME = "dtcnhf3eg";
   const [logoUrl, setLogoUrl] = useState(foodImgSrc);
   const [foods, setFoods] = useState([]);
   const [uploading, setUploading] = useState(false);
@@ -54,8 +51,9 @@ export const AddFoodMore = (props) => {
     foodPrice: foodPrice || "",
     ingredients: ingredients || "",
     foodId: foodId || "",
-    categories: category || "",
+    categories: categories || "",
   });
+
   const uploadToCloudinary = async (file) => {
     const formData = new FormData();
     formData.append("file", file);
@@ -65,7 +63,7 @@ export const AddFoodMore = (props) => {
       const response = await fetch(
         `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
         {
-          method: "PUT",
+          method: "POST",
           body: formData,
         }
       );
@@ -122,6 +120,7 @@ export const AddFoodMore = (props) => {
       console.log(err);
     }
   };
+  console.log(uploading);
 
   useEffect(() => {
     getData();

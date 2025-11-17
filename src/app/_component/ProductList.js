@@ -93,11 +93,9 @@ export const ProductList = (props) => {
                 </button>
               </div>
               <div className=" h-[328px] flex flex-col justify-between">
-                <div className="w-[377px] h-24 flex flex-col gap-3">
-                  <p className=" h-9 text-[#EF4444] text-[30px]">{foodName}</p>
-                  <p className="w-30 h-4 text-[#09090B] text-12">
-                    {ingredients}
-                  </p>
+                <div className="w-[377px]  flex flex-col gap-3">
+                  <p className="  text-[#EF4444] text-[30px]">{foodName}</p>
+                  <p className="  text-[#09090B] text-4">{ingredients}</p>
                 </div>
                 <div className="w-[377px] h-[124px] flex flex-col justify-between">
                   <div className="w-[377px] h-14 flex items-center">

@@ -17,7 +17,8 @@ const options = {
 };
 export const AddFood = (props) => {
   const router = useRouter();
-  const { foodAddMore, categories, foodCount } = props;
+  const { foodAddMore, foodId, foodCount, category } = props;
+
   const UPLOAD_PRESET = "food-web";
 
   const CLOUD_NAME = "dtcnhf3eg";
@@ -71,6 +72,7 @@ export const AddFood = (props) => {
     const data = await fetch(`http://localhost:8000/foods`, options);
     const jsonData = await data.json();
     setFoods(jsonData);
+    console.log(jsonData);
   };
   const [addFoodNew, setAddFoodNew] = useState(false);
   const activeButtonaddFoodNew = () => {
@@ -104,7 +106,7 @@ export const AddFood = (props) => {
           image: logoUrl,
           price: addfood.foodPrice,
           ingredients: addfood.ingredients,
-          category: categories,
+          id: foodId,
         }),
       });
       setAddFood({
@@ -120,11 +122,11 @@ export const AddFood = (props) => {
       console.log(err);
     }
   };
-  const [categoriesFood, setCategoriesFood] = useState([]);
+  const [categoryFoods, setCategories] = useState([]);
   const foodsCategory = async () => {
     const data = await fetch(`http://localhost:8000/foodsCategory`, options);
     const jsonData = await data.json();
-    setCategoriesFood(jsonData);
+    setCategories(jsonData);
   };
 
   useEffect(() => {
@@ -158,7 +160,7 @@ export const AddFood = (props) => {
         </div>
 
         {foods
-          .filter((food) => food && food.category._id === categories)
+          .filter((food) => food && food.categories === category)
           .map((cur, index) => (
             <AddFoodMore
               key={`foods-${index}`}
@@ -166,7 +168,7 @@ export const AddFood = (props) => {
               foodImgSrc={cur.image}
               foodPrice={cur.price}
               ingredients={cur.ingredients}
-              categories={categoriesFood}
+              categories={categoryFoods}
               category={cur.category}
               foodId={cur._id}
             />

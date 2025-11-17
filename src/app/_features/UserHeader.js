@@ -7,7 +7,11 @@ import { DeleteIcon } from "../downicon/DeleteIcon";
 import { ShoppingCart } from "../downicon/ShoppingCart";
 import { User } from "../downicon/UserIcon";
 import { ShoppingCartIcon } from "../downicon/ShoppingCartIcon";
-export const UserHeader = () => {
+
+import { RemoveId } from "../downicon/RemoveId";
+import { ProductListEdit } from "../_component/ProductListEdit";
+export const UserHeader = (props) => {
+  const { foodImgSrc, foodName, foodPrice, ingredients } = props;
   const [addLocation, setAddLocation] = useState(false);
   const activeButtonaddLocation = () => {
     setAddLocation(!addLocation);
@@ -109,29 +113,44 @@ export const UserHeader = () => {
         </div>
       )}
       {shoppingCart && (
-        <div className="fixed  z-50 top-0 left-0 w-screen h-screen flex justify-center items-center bg-[rgba(0,_0,_0,_0.5)]">
-          <div className="w-[535px] h-[1024px] bg-[#404040] rounded-md gap-6 border  flex flex-col justify-center items-center">
-            <div className="w-[471px] h-9 flex justify-between">
+        <div className="fixed  z-50 top-0 left-0 w-screen h-screen flex justify-end items-center bg-[rgba(0,_0,_0,_0.5)]">
+          <div className="w-[535px] h-[1024px] bg-[#404040] rounded-md gap-6 flex flex-col justify-center items-center">
+            <div className="w-[471px] h-9 flex justify-center items-center">
               <ShoppingCartIcon />
-            </div>
-
-            <input
-              placeholder="Please share your complete address"
-              className="w-[454px] h-20 border rounded-md text-black "
-            />
-
-            <div className="w-[454px] h-16 flex justify-end items-end gap-2">
+              <p className="text-[21px] font-bold  text-white w-[387px] h-7 ml-2">
+                Order detail
+              </p>
               <button
-                className="w-[79px] h-10 bg-white border rounded-md flex justify-center items-center text-black text-[14px] cursor-pointer"
+                className="w-9 h-9 border rounded-full flex justify-center items-center cursor-pointer"
                 onClick={() => {
-                  setAddLocation(false);
+                  setShoppingCart(false);
                 }}
               >
-                Cancel
+                <RemoveId />
               </button>
-              <button className="w-[115px] h-10 bg-black rounded-md flex justify-center items-center text-white text-[14px] cursor-pointer">
-                Add category
+            </div>
+            <div className="w-[471px] h-11 bg-white rounded-full flex justify-center items-center">
+              <button className="w-[227px] h-9 bg-[#EF4444] rounded-full text-[18px] text-white">
+                Cart
               </button>
+              <button className="w-[227px] h-9 bg-white text-black rounded-full text-[18px]">
+                order
+              </button>
+            </div>
+            <div className="w-[471px] h-[532px] bg-white rounded-2xl">
+              <p className="text-[#71717A] text-5">My cart</p>
+              <div className="w-[539px] h-[120px] flex gap-6 justify-center items-center">
+                <div className="w-[124px] h-[120px] rounded-md ">
+                  <img
+                    className=" w-[124px] h-[120px]rounded-md "
+                    src={foodImgSrc}
+                    alt="foodSrc"
+                    onError={(e) => (e.currentTarget.src = "/img")}
+                  ></img>
+                </div>
+
+                <ProductListEdit />
+              </div>
             </div>
           </div>
         </div>
