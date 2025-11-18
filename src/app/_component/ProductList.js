@@ -3,10 +3,9 @@ import { AddFoodIcon } from "../downicon/AddFoodIcon";
 import { CheckFood } from "../downicon/CheckFood";
 import { CheckIcon } from "../downicon/CheckIcon";
 import { useState } from "react";
-import { DeleteIcon } from "../downicon/DeleteIcon";
-import { TrashIcon } from "../downicon/TrashIcon";
 import { BackIcon } from "../downicon/BackIcon";
 import { NextIcon } from "../downicon/NextIcon";
+import { DeleteIcon } from "../downicon/DeleteIcon";
 export const ProductList = (props) => {
   const { foodImgSrc, foodName, foodPrice, ingredients } = props;
   const [checkFood, setCheckFood] = useState(false);
@@ -23,10 +22,7 @@ export const ProductList = (props) => {
     setEditFood(!editFood);
   };
   return (
-    <div
-      className="w-[397px] h-[342px] bg-white rounded-md"
-      onClick={activeButtonEditFood}
-    >
+    <div className="w-[397px] h-[342px] bg-white rounded-md">
       <div className="flex flex-col gap-3 items-center">
         <div className="relative">
           <img
@@ -36,20 +32,21 @@ export const ProductList = (props) => {
           {/* {falsecheckFood && ( */}
           <button
             className="w-11 h-11 bg-white rounded-full flex justify-center items-center absolute z-10 bottom-0 right-0 m-2 cursor-pointer"
-            onClick={activeButtonCheckFood}
+            // onClick={activeButtonCheckFood}
+            onClick={activeButtonEditFood}
           >
             <AddFoodIcon />
           </button>
           {/* )} */}
 
-          {checkFood && (
+          {/* {checkFood && (
             <button
               className="w-11 h-11 bg-[#18181B] rounded-full flex justify-center items-center absolute z-10 bottom-0 right-0 m-2"
               onClick={activeButtonFalseCheckFood}
             >
               <CheckFood />
             </button>
-          )}
+          )} */}
         </div>
 
         <div className="flex flex-col w-[365px] h-20 gap-2">
@@ -60,7 +57,7 @@ export const ProductList = (props) => {
           <p className="text-[#09090B] text-[14px]">{ingredients}</p>
         </div>
       </div>
-      {checkFood && (
+      {/* {checkFood && (
         <div className="fixed z-10 top-0 left-0 w-screen h-screen flex justify-center mt-10 ">
           <div className="w-[375px] h-12 bg-black rounded-md  flex justify-center items-center gap-3 border border-white">
             <CheckIcon />
@@ -69,14 +66,14 @@ export const ProductList = (props) => {
             </p>
           </div>
         </div>
-      )}
+      )} */}
       {editFood && (
         <div className="fixed z-10 top-0 left-0 w-screen h-screen flex justify-center items-center bg-[rgba(0,_0,_0,_0.5)]">
           <div className="w-[826px] h-[412px] bg-white rounded-md border flex gap-6 justify-center items-center">
             <div className="w-[377px] h-[364px] rounded-md ">
               <img
                 className=" w-[377px] h-[364px] rounded-md "
-                src={foodImgSrc}
+                src={foodImgSrc || null}
                 alt="foodSrc"
                 onError={(e) => (e.currentTarget.src = "/img")}
               ></img>

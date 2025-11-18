@@ -3,6 +3,7 @@ import { AddIcon } from "../downicon/AddIcon";
 import { useState, useEffect } from "react";
 import { DeleteIcon } from "../downicon/DeleteIcon";
 import { CheckIcon } from "../downicon/CheckIcon";
+
 const options = {
   method: "GET",
   headers: {
@@ -19,6 +20,12 @@ export const DishesCategory = (props) => {
     const jsonData = await data.json();
     setCategories(jsonData);
   };
+  const [foods, setfoods] = useState([]);
+  const allFood = async () => {
+    const data = await fetch(`http://localhost:8000/foods`, options);
+    const jsonData = await data.json();
+    setfoods(jsonData);
+  };
   const [addCategory, setAddCategory] = useState(false);
   const activeButtonaddCategory = () => {
     setAddCategory(!addCategory);
@@ -32,6 +39,9 @@ export const DishesCategory = (props) => {
     foodName: "",
   });
 
+  useEffect(() => {
+    allFood();
+  }, []);
   useEffect(() => {
     getData();
   }, []);
@@ -71,7 +81,7 @@ export const DishesCategory = (props) => {
         <div className="h-9 min-w-[145px] border border-red-500 rounded-full flex justify-center items-center gap-2">
           <p className="text-[14px] text-black">All Dishes</p>
           <div className="min-w-[29px] h-5 bg-black rounded-full text-white flex justify-center items-center">
-            {categories.length}
+            {foods.length}
           </div>
         </div>
         {categories.map((cur, index) => (

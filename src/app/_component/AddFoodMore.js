@@ -13,6 +13,9 @@ const options = {
   },
 };
 export const AddFoodMore = (props) => {
+  const UPLOAD_PRESET = "food-web";
+
+  const CLOUD_NAME = "dtcnhf3eg";
   const {
     foodImgSrc,
     foodName,
@@ -76,23 +79,23 @@ export const AddFoodMore = (props) => {
     }
   };
 
-  const handleLogoUpload = async (event) => {
-    const file = event.target.files[0];
+  // const handleLogoUpload = async (event) => {
+  //   const file = event.target.files[0];
 
-    if (!file) return;
+  //   if (!file) return;
 
-    setUploading(true);
+  //   setUploading(true);
 
-    try {
-      const url = await uploadToCloudinary(file);
-      setAddFood((prev) => ({ ...prev, foodImgSrc: url }));
-      setLogoUrl(url);
-    } catch (err) {
-      console.log("Failed to upload logo: " + err.message);
-    } finally {
-      setUploading(false);
-    }
-  };
+  //   try {
+  //     const url = await uploadToCloudinary(file);
+  //     setAddFood((prev) => ({ ...prev, foodImgSrc: url }));
+  //     setLogoUrl(url);
+  //   } catch (err) {
+  //     console.log("Failed to upload logo: " + err.message);
+  //   } finally {
+  //     setUploading(false);
+  //   }
+  // };
   const handleEtidFood = async () => {
     const token = localStorage.getItem("token");
     console.log(token);
@@ -107,7 +110,7 @@ export const AddFoodMore = (props) => {
         },
         body: JSON.stringify({
           foodName: addfood.foodName,
-          image: addfood.foodImgSrc,
+          image: addfood.logoUrl,
           price: addfood.foodPrice,
           ingredients: addfood.ingredients,
           id: foodId,
@@ -120,7 +123,6 @@ export const AddFoodMore = (props) => {
       console.log(err);
     }
   };
-  console.log(uploading);
 
   useEffect(() => {
     getData();
@@ -150,20 +152,20 @@ export const AddFoodMore = (props) => {
       setUploading(false);
     }
   };
-  // const handleLogoUpload = async (event) => {
-  //   const file = event.target.files[0];
+  const handleLogoUpload = async (event) => {
+    const file = event.target.files[0];
 
-  //   if (!file) return;
-  //   setUploading(true);
-  //   try {
-  //     const url = await uploadToCloudinary(file);
+    if (!file) return;
+    setUploading(true);
+    try {
+      const url = await uploadToCloudinary(file);
 
-  //     setLogoUrl(url);
-  //     setAddFood({ ...foodImgSrc, foodImgSrc: url });
-  //   } catch (err) {
-  //     console.log("Failed to upload logo: " + err.message);
-  //   }
-  // };
+      setLogoUrl(url);
+      setAddFood({ ...foodImgSrc, foodImgSrc: url });
+    } catch (err) {
+      console.log("Failed to upload logo: " + err.message);
+    }
+  };
 
   return (
     <>
@@ -249,7 +251,7 @@ export const AddFoodMore = (props) => {
               <p className="w-30 h-4 text-[#71717A] text-[11px]">Price</p>
               <input
                 className="w-[288px] h-9 border rounded-md text-black"
-                defaultValue={foodPrice}
+                defaultValue={Number}
                 onChange={(e) =>
                   setAddFood({ ...addfood, foodPrice: e.target.value })
                 }
@@ -257,51 +259,49 @@ export const AddFoodMore = (props) => {
             </div>
             <div className="w-[424px] h-[140px] flex items-center justify-between">
               <p className="w-30 h-4 text-[#71717A] text-[11px]">Image</p>
-              {logoUrl && (
-                <div className="relative">
-                  <img
-                    className=" w-[288px] h-[116px] border-2 "
-                    src={foodImgSrc || logoUrl}
-                    alt="foodSrc"
-                    onError={(e) => (
-                      <>
-                        <button className="w-8 h-8 bg-white rounded-full flex justify-center items-center absolute mt-13">
-                          <ImageIcon />
-                        </button>
-                        <input
-                          type="file"
-                          className="text-gray-100 cursor-pointer w-[412px] h-[138px]"
-                          accept="image/*"
-                          onChange={handleLogoUpload}
-                          name="file"
-                        />
-                        {uploading && (
-                          <p className="text-black absolute z-10 mb-10">
-                            Uploading...
-                          </p>
-                        )}
-                      </>
-                    )}
-                    onChange={handleLogoUpload}
-                  ></img>
-                  <div className="flex justify-end">
-                    <button
-                      className="bg-black  w-4 h-4 rounded-full flex justify-center items-center absolute z-1 top-0 right-0 m-2 cursor-pointer"
-                      onClick={() => {
-                        setLogoUrl(false);
-                      }}
-                    >
-                      <img
-                        src="./remove.png"
-                        style={{
-                          width: "8px",
-                          height: "8px",
-                        }}
+              <div className="relative">
+                <img
+                  className=" w-[288px] h-[116px] border-2 "
+                  src={logoUrl || foodImgSrc}
+                  alt="foodSrc"
+                  onError={(e) => (
+                    <>
+                      <button className="w-8 h-8 bg-white rounded-full flex justify-center items-center absolute mt-13">
+                        <ImageIcon />
+                      </button>
+                      <input
+                        type="file"
+                        className="text-gray-100 cursor-pointer w-[412px] h-[138px]"
+                        accept="image/*"
+                        onChange={handleLogoUpload}
+                        name="file"
                       />
-                    </button>
-                  </div>
+                      {uploading && (
+                        <p className="text-black absolute z-10 mb-10">
+                          Uploading...
+                        </p>
+                      )}
+                    </>
+                  )}
+                  onChange={handleLogoUpload}
+                ></img>
+                <div className="flex justify-end">
+                  <button
+                    className="bg-black  w-4 h-4 rounded-full flex justify-center items-center absolute z-1 top-0 right-0 m-2 cursor-pointer"
+                    onClick={() => {
+                      setLogoUrl(false);
+                    }}
+                  >
+                    <img
+                      src="./remove.png"
+                      style={{
+                        width: "8px",
+                        height: "8px",
+                      }}
+                    />
+                  </button>
                 </div>
-              )}
+              </div>
               {!logoUrl && (
                 <>
                   <button className="w-8 h-8 bg-white rounded-full flex justify-center items-center absolute ml-67">

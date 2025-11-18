@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-
+import Link from "next/link";
 export default function login() {
   const router = useRouter();
 
@@ -54,7 +54,9 @@ export default function login() {
             Enter your email below to login to your account
           </CardDescription>
           <CardAction>
-            <Button variant="link">Sign Up</Button>
+            <Link href="/signUp">
+              <Button variant="link">Sign Up</Button>
+            </Link>
           </CardAction>
         </CardHeader>
 

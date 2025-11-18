@@ -160,7 +160,7 @@ export const AddFood = (props) => {
         </div>
 
         {foods
-          .filter((food) => food && food.categories === category)
+          .filter((food) => food.category._id === category)
           .map((cur, index) => (
             <AddFoodMore
               key={`foods-${index}`}

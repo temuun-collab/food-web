@@ -10,7 +10,7 @@ const options = {
   },
 };
 export const MenuContainer = (props) => {
-  const { categoryId, foodName } = props;
+  const { category, foodName } = props;
   const [categories, setCategories] = useState([]);
   const [foods, setFoods] = useState([]);
   const getData = async () => {
@@ -35,9 +35,9 @@ export const MenuContainer = (props) => {
     <div className="w-[1264px] h-auto flex flex-col gap-10 mt-10 mb-10">
       <p className="text-white text-[30px] font-bold">{foodName}</p>
       <div className=" max-h-[720px]">
-        <div className="w-[1264px] max-h-[720px] grid grid-cols-3">
+        <div className="w-[1264px] h-fit grid grid-cols-3 gap-6">
           {foods
-            .filter((food) => food.category._id === categoryId)
+            .filter((food) => food.category._id === categories)
             .map((cur, index) => (
               <ProductList
                 key={`foods-${index}`}
