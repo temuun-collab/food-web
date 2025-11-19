@@ -78,24 +78,6 @@ export const AddFoodMore = (props) => {
       console.error("Cloudinary upload failed:", error);
     }
   };
-
-  // const handleLogoUpload = async (event) => {
-  //   const file = event.target.files[0];
-
-  //   if (!file) return;
-
-  //   setUploading(true);
-
-  //   try {
-  //     const url = await uploadToCloudinary(file);
-  //     setAddFood((prev) => ({ ...prev, foodImgSrc: url }));
-  //     setLogoUrl(url);
-  //   } catch (err) {
-  //     console.log("Failed to upload logo: " + err.message);
-  //   } finally {
-  //     setUploading(false);
-  //   }
-  // };
   const handleEtidFood = async () => {
     const token = localStorage.getItem("token");
     console.log(token);
@@ -110,11 +92,11 @@ export const AddFoodMore = (props) => {
         },
         body: JSON.stringify({
           foodName: addfood.foodName,
-          image: addfood.logoUrl,
+          image: logoUrl,
           price: addfood.foodPrice,
           ingredients: addfood.ingredients,
           id: foodId,
-          category: addfood.categories,
+          category: category,
         }),
       });
       await getData();
@@ -145,6 +127,7 @@ export const AddFoodMore = (props) => {
       });
       const data = await res.json();
       if (data.token) localStorage.setItem("token", data.token);
+      await getData();
       setEditFood(false);
     } catch (err) {
       console.log(err);
@@ -161,7 +144,8 @@ export const AddFoodMore = (props) => {
       const url = await uploadToCloudinary(file);
 
       setLogoUrl(url);
-      setAddFood({ ...foodImgSrc, foodImgSrc: url });
+      setAddFood((prev) => ({ ...prev, foodImgSrc: url }));
+      await getData();
     } catch (err) {
       console.log("Failed to upload logo: " + err.message);
     }
@@ -184,12 +168,12 @@ export const AddFoodMore = (props) => {
             </button>
           </div>
 
-          <div className="flex flex-col w-[238px] h-[70px] ">
-            <div className="flex justify-between w-[238px] h-5">
+          <div className="flex flex-col w-[238px] h-[70px] gap-[0.5px] overflow-y-scroll">
+            <div className="flex justify-between w-[238px] h-auto">
               <p className="text-[#EF4444] text-[14px]">{foodName}</p>
               <p className="text-[#09090B] text-3">{foodPrice}</p>
             </div>
-            <p className="text-[#09090B] text-[13px]">{ingredients}</p>
+            <p className="text-[#09090B] text-[13px] h-auto">{ingredients}</p>
           </div>
         </div>
       </div>
@@ -251,7 +235,7 @@ export const AddFoodMore = (props) => {
               <p className="w-30 h-4 text-[#71717A] text-[11px]">Price</p>
               <input
                 className="w-[288px] h-9 border rounded-md text-black"
-                defaultValue={Number}
+                defaultValue={foodPrice}
                 onChange={(e) =>
                   setAddFood({ ...addfood, foodPrice: e.target.value })
                 }
@@ -283,7 +267,7 @@ export const AddFoodMore = (props) => {
                       )}
                     </>
                   )}
-                  onChange={handleLogoUpload}
+                  // onChange={handleLogoUpload}
                 ></img>
                 <div className="flex justify-end">
                   <button

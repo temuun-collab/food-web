@@ -7,7 +7,7 @@ import { BackIcon } from "../downicon/BackIcon";
 import { NextIcon } from "../downicon/NextIcon";
 import { DeleteIcon } from "../downicon/DeleteIcon";
 export const ProductList = (props) => {
-  const { foodImgSrc, foodName, foodPrice, ingredients } = props;
+  const { foodImgSrc, foodName, foodPrice, ingredients, foodId } = props;
   const [checkFood, setCheckFood] = useState(false);
   const [falsecheckFood, setFalseCheckFood] = useState(false);
   const activeButtonCheckFood = () => {
@@ -17,6 +17,40 @@ export const ProductList = (props) => {
     setFalseCheckFood(!falsecheckFood);
   };
   const [editFood, setEditFood] = useState(false);
+  const [addFoodCount, setAddFoodCount] = useState(1);
+  const [nextClick, setNextClick] = useState(false);
+  const [backClick, setBackClick] = useState(false);
+  const handleAddFoodCount = () => {
+    setAddFoodCount(addFoodCount + 1);
+    setNextClick(true);
+    setBackClick(false);
+  };
+  const handleBeforeFoodCount = () => {
+    if (addFoodCount === 1) {
+      return;
+    } else {
+      setAddFoodCount(addFoodCount - 1);
+      setNextClick(false);
+      setBackClick(true);
+    }
+  };
+  const handleAddSubmit = () => {
+    const foodsCount = {
+      foodImgSrc,
+      foodName,
+      foodPrice,
+      ingredients,
+      foodId,
+      addFoodCount,
+    };
+    const addCarts = JSON.parse(localStorage.getItem("foodsCount") || "[]");
+    console.log(foodsCount, addCarts);
+    localStorage.setItem(
+      "foodsCount",
+      JSON.stringify([...addCarts, foodsCount])
+    );
+    setEditFood(false);
+  };
 
   const activeButtonEditFood = () => {
     setEditFood(!editFood);
@@ -103,16 +137,31 @@ export const ProductList = (props) => {
                       </p>
                     </div>
                     <div className="w-[121px] h-11 gap-3 flex items-center justify-center">
-                      <button className="h-11 w-11 bg-white rounded-full border border-[#E4E4E7] flex items-center justify-center">
+                      <button
+                        className={`h-11 w-11 bg-white rounded-full border border-[#E4E4E7] flex items-center justify-center cursor-pointer${
+                          backClick ? "bg-black" : "bg-white"
+                        }`}
+                        onClick={handleBeforeFoodCount}
+                      >
                         <BackIcon />
                       </button>
-                      <p className="text-[18px] text-black font-bold">1</p>
-                      <button className="h-11 w-11 bg-white rounded-full border border-[#E4E4E7] flex items-center justify-center">
+                      <p className="text-[18px] text-black font-bold">
+                        {addFoodCount}
+                      </p>
+                      <button
+                        className={`h-11 w-11 bg-white rounded-full border border-[#E4E4E7] flex items-center justify-center cursor-pointer${
+                          nextClick ? "bg-black" : "bg-white"
+                        }`}
+                        onClick={handleAddFoodCount}
+                      >
                         <NextIcon />
                       </button>
                     </div>
                   </div>
-                  <button className="w-[377px] h-11 bg-black rounded-full flex justify-center items-center text-white">
+                  <button
+                    className="w-[377px] h-11 bg-black rounded-full flex justify-center items-center text-white"
+                    onClick={handleAddSubmit}
+                  >
                     Add to cart
                   </button>
                 </div>

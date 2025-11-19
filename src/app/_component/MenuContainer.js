@@ -37,7 +37,7 @@ export const MenuContainer = (props) => {
       <div className=" max-h-[720px]">
         <div className="w-[1264px] h-fit grid grid-cols-3 gap-6">
           {foods
-            .filter((food) => food.category._id === categories)
+            .filter((food) => food.category._id === category)
             .map((cur, index) => (
               <ProductList
                 key={`foods-${index}`}
@@ -45,6 +45,7 @@ export const MenuContainer = (props) => {
                 foodImgSrc={cur.image}
                 foodPrice={cur.price}
                 ingredients={cur.ingredients}
+                foodId={cur._id}
               />
             ))}
         </div>

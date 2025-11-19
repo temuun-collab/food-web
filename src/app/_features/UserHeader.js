@@ -11,16 +11,10 @@ import { RemoveId } from "../downicon/RemoveId";
 import { ProductListEdit } from "../_component/ProductListEdit";
 import { DeleteIcon } from "../downicon/DeleteIcon";
 import Link from "next/link";
-const options = {
-  method: "GET",
-  headers: {
-    accept: "application/json",
-    Authorization:
-      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4NzZiMzEwNzJlZDg5ODcwMzQxM2Y0NzkyYzZjZTdjYyIsIm5iZiI6MTczODAyNjY5NS44NCwic3ViIjoiNjc5ODJlYzc3MDJmNDkyZjQ3OGY2OGUwIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.k4OF9yGrhA2gZ4VKCH7KLnNBB2LIf1Quo9c3lGF6toE",
-  },
-};
-
-export const UserHeader = () => {
+import { CartFoodIcon } from "../downicon/CartFoodIcon";
+import { usePathname } from "next/navigation";
+export const UserHeader = (props) => {
+  const { foodPrice } = props;
   const [addLocation, setAddLocation] = useState(false);
   const activeButtonaddLocation = () => {
     setAddLocation(!addLocation);
@@ -37,14 +31,15 @@ export const UserHeader = () => {
   const activeButtonCheckoutButton = () => {
     setCheckoutButton(!checkoutButton);
   };
+  const url = usePathname();
+  const isOrder = url.includes("order");
+  const isCart = url.includes("cart");
   const [foods, setFoods] = useState([]);
-  const getData = async () => {
-    const data = await fetch(`http://localhost:8000/foods`, options);
-    const jsonData = await data.json();
-    setFoods(jsonData);
-  };
   useEffect(() => {
-    getData();
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("foodsCount");
+      if (saved) setFoods(JSON.parse(saved));
+    }
   }, []);
   return (
     <div className="w-[1440px] h-[172px] bg-[#18181B] flex justify-between items-center">
@@ -154,79 +149,152 @@ export const UserHeader = () => {
               </button>
             </div>
             <div className="w-[471px] h-11 bg-white rounded-full flex justify-center items-center">
-              <button className="w-[227px] h-9 bg-[#EF4444] rounded-full text-[18px] text-white">
+              <button
+                className={`w-[227px] h-9  rounded-full text-[18px] ${
+                  isCart ? "bg-[#EF4444] text-white" : "bg-white text-black"
+                }`}
+              >
                 Cart
               </button>
-              <button className="w-[227px] h-9 bg-white text-black rounded-full text-[18px]">
-                order
-              </button>
-            </div>
-            <div className="w-[471px] h-[532px] bg-white rounded-2xl ">
-              <p className="text-[#71717A] text-[21px] m-2">My cart</p>
-
-              <div className="m-3 h-[322px] overflow-y-scroll">
-                {foods.map((cur, index) => (
-                  <ProductListEdit
-                    key={`foods-${index}`}
-                    foodName={cur.foodName}
-                    foodImgSrc={cur.image}
-                    foodPrice={cur.price}
-                    ingredients={cur.ingredients}
-                  />
-                ))}
-              </div>
-              <p className="text-[#71717A] text-[21px] ml-2">
-                Delivery location
-              </p>
-              <input
-                placeholder="Please share your complete address"
-                className="w-[439px] h-20 border rounded-md text-black m-3"
-                // value={addfood.foodPrice}
-                // onChange={(e) =>
-                //   setAddFood({ ...addfood, foodPrice: e.target.value })
-                // }
-              />
-            </div>
-            <div className="w-[471px] h-[276px] bg-white rounded-2xl ">
-              <p className="text-[#71717A] text-[21px] m-2">Payment info</p>
-              <div className="flex flex-col ml-3 gap-5">
-                <div className="flex justify-between">
-                  <p className="text-[#71717A] w-[219px] h-7 text-4">Items </p>
-                  <div className="flex justify-end w-[219px]">
-                    <p className="text-black font-bold w-[219px] h-7 text-4">
-                      Items{" "}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex justify-between">
-                  <p className="text-[#71717A] w-[219px] h-7 text-4">
-                    Shipping{" "}
-                  </p>
-                  <div className="flex justify-end w-[219px]">
-                    <p className="text-black font-bold w-[219px] h-7 text-4">
-                      Items{" "}
-                    </p>
-                  </div>
-                </div>
-                <hr className="bg-[#71717A] w-[439px]"></hr>
-                <div className="flex justify-between">
-                  <p className="text-[#71717A] w-[219px] h-7 text-4">
-                    Shipping{" "}
-                  </p>
-                  <div className="flex justify-end w-[219px]">
-                    <p className="text-black font-bold w-[219px] h-7 text-4">
-                      Items{" "}
-                    </p>
-                  </div>
-                </div>
-              </div>
               <button
-                className="w-[439px] h-11 flex justify-center items-center bg-[#EF4444] rounded-full mt-5 ml-3 text-white cursor-pointer"
-                onClick={activeButtonCheckoutButton}
+                className={`w-[227px] h-9  rounded-full text-[18px] ${
+                  isOrder ? "bg-[#EF4444] text-white" : "bg-white text-black"
+                }`}
               >
-                Checkout
+                Order
               </button>
             </div>
+            {isOrder && (
+              <>
+                <div className="w-[471px] h-[532px] bg-white rounded-2xl ">
+                  <p className="text-[#71717A] text-[21px] m-2">My cart</p>
+                  {foods.length <= 0 ? (
+                    <div
+                      className="w-[439px] h-[182px] bg-[#F4F4F5] rounded-2xl flex flex-col justify-center ml-3 items-center"
+                      onClick={() => {
+                        setFoods(false);
+                      }}
+                    >
+                      <CartFoodIcon />
+                      <p className="text-4 text-black font-bold">
+                        {" "}
+                        Your cart is empthy{" "}
+                      </p>
+                      <p className="text-3 text-[#71717A]">
+                        {" "}
+                        Hungry? 🍔 Add some delicious dishes to your{" "}
+                      </p>
+                      <p className="text-3 text-[#71717A]">
+                        {" "}
+                        cart and satisfy your cravings!{" "}
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="m-3 h-[322px] overflow-y-scroll">
+                      {foods.map((cur, index) => (
+                        <ProductListEdit
+                          key={`foods-${index}`}
+                          foodName={cur.foodName}
+                          foodImgSrc={cur.image}
+                          foodPrice={cur.price}
+                          ingredients={cur.ingredients}
+                        />
+                      ))}
+                    </div>
+                  )}
+                  <p className="text-[#71717A] text-[21px] ml-2">
+                    Delivery location
+                  </p>
+                  <input
+                    placeholder="Please share your complete address"
+                    className="w-[439px] h-20 border rounded-md text-black m-3"
+                  />
+                </div>
+                <div className="w-[471px] h-[276px] bg-white rounded-2xl ">
+                  <p className="text-[#71717A] text-[21px] m-2">Payment info</p>
+                  {foods.length <= 0 ? (
+                    <div className="flex flex-col ml-3 gap-5">
+                      <div className="flex justify-between">
+                        <p className="text-[#71717A] w-[219px] h-7 text-4">
+                          Items{" "}
+                        </p>
+
+                        <p className="text-black font-bold w-[219px] h-7 text-4 ml-86">
+                          -
+                        </p>
+                      </div>
+                      <div className="flex justify-between">
+                        <p className="text-[#71717A] w-[219px] h-7 text-4">
+                          Shipping{" "}
+                        </p>
+                        <div className="flex justify-end w-[219px]">
+                          <p className="text-black font-bold w-[219px] h-7 text-4 ml-41">
+                            -
+                          </p>
+                        </div>
+                      </div>
+                      <hr className="bg-[#71717A] w-[439px]"></hr>
+                      <div className="flex justify-between">
+                        <p className="text-[#71717A] w-[219px] h-7 text-4">
+                          Shipping{" "}
+                        </p>
+                        <div className="flex justify-end w-[219px]">
+                          <p className="text-black font-bold w-[219px] h-7 text-4 ml-41">
+                            -
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col ml-3 gap-5">
+                      <div className="flex justify-between">
+                        <p className="text-[#71717A] w-[219px] h-7 text-4">
+                          Items{" "}
+                        </p>
+
+                        <p className="text-black font-bold w-[219px] h-7 text-4 ml-86">
+                          items
+                        </p>
+                      </div>
+                      <div className="flex justify-between">
+                        <p className="text-[#71717A] w-[219px] h-7 text-4">
+                          Shipping{" "}
+                        </p>
+                        <div className="flex justify-end w-[219px]">
+                          <p className="text-black font-bold w-[219px] h-7 text-4 ml-41">
+                            items
+                          </p>
+                        </div>
+                      </div>
+                      <hr className="bg-[#71717A] w-[439px]"></hr>
+                      <div className="flex justify-between">
+                        <p className="text-[#71717A] w-[219px] h-7 text-4">
+                          Shipping{" "}
+                        </p>
+                        <div className="flex justify-end w-[219px]">
+                          <p className="text-black font-bold w-[219px] h-7 text-4 ml-41">
+                            items
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  <button
+                    className="w-[439px] h-11 flex justify-center items-center bg-[#EF4444] rounded-full mt-5 ml-3 text-white cursor-pointer"
+                    onClick={activeButtonCheckoutButton}
+                  >
+                    Checkout
+                  </button>
+                </div>
+              </>
+            )}
+            {isOrder && (
+              <div className="w-[471px] h-[832px] bg-white rounded-2xl flex justify-center items-center flex-col">
+                <p className="text-black text-[21px] w-[439px] h-[29px]">
+                  Orders History
+                </p>
+              </div>
+            )}
           </div>
         </div>
       )}

@@ -107,6 +107,7 @@ export const AddFood = (props) => {
           price: addfood.foodPrice,
           ingredients: addfood.ingredients,
           id: foodId,
+          category: category,
         }),
       });
       setAddFood({
@@ -151,10 +152,11 @@ export const AddFood = (props) => {
               >
                 <AddIcon />
               </button>
-
-              <p className="text-[14px] text-black">
-                Add new Dish to {foodAddMore}
-              </p>
+              <div className="w-[270px] flex justify-center">
+                <p className="text-[14px] text-black">
+                  Add new Dish to {foodAddMore}
+                </p>
+              </div>
             </div>
           </div>
         </div>

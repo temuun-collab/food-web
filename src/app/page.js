@@ -39,7 +39,7 @@ export default function () {
             <MenuContainer
               key={`category-${index}`}
               foodName={cur.categoryName}
-              categoryId={cur._id}
+              category={cur._id}
             />
           ))}
         </div>
