@@ -106,9 +106,6 @@ export const AddFoodMore = (props) => {
     }
   };
 
-  useEffect(() => {
-    getData();
-  }, []);
   const handleDeleteFood = async () => {
     const token = localStorage.getItem("token");
     console.log(token);
@@ -150,7 +147,9 @@ export const AddFoodMore = (props) => {
       console.log("Failed to upload logo: " + err.message);
     }
   };
-
+  useEffect(() => {
+    getData();
+  }, []);
   return (
     <>
       <div className="w-[270px] h-[241px] border border-gray rounded-md flex justify-center items-center shadow-stone-600">

@@ -41,15 +41,28 @@ export const ProductList = (props) => {
       foodPrice,
       ingredients,
       foodId,
-      addFoodCount,
+      addFoodCount: 1,
     };
     const addCarts = JSON.parse(localStorage.getItem("foodsCount") || "[]");
-    console.log(foodsCount, addCarts);
-    localStorage.setItem(
-      "foodsCount",
-      JSON.stringify([...addCarts, foodsCount])
-    );
-    setEditFood(false);
+    const match = addCarts.find((item) => {
+      return item.foodId === foodId;
+    });
+    if (match) {
+      match.addFoodCount += 1;
+    } else if (!match) {
+      localStorage.setItem("foodsCount", JSON.stringify(addCarts));
+      setEditFood(false);
+    } else {
+      localStorage.setItem(
+        "foodsCount",
+        JSON.stringify([...addCarts, foodsCount])
+      );
+    }
+    // if
+
+    // 1. addCarts dotor foodId tai adil id tai element baina uu
+    // 2. hervee baival addCarts dotor baigaa ter element ii count iig ihesgii
+    // 3. hervee baihgui baival shineer uusgii
   };
 
   const activeButtonEditFood = () => {

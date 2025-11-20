@@ -12,9 +12,12 @@ import { ProductListEdit } from "../_component/ProductListEdit";
 import { DeleteIcon } from "../downicon/DeleteIcon";
 import Link from "next/link";
 import { CartFoodIcon } from "../downicon/CartFoodIcon";
-import { usePathname } from "next/navigation";
+import { FoodIcon } from "../downicon/FoodIcon";
+import { DateIconOrder } from "../downicon/DateIconOrder";
+import { LocationIconOrder } from "../downicon/LocationIconOrder";
+
 export const UserHeader = (props) => {
-  const { foodPrice } = props;
+  const { foodPrice, foodName, address } = props;
   const [addLocation, setAddLocation] = useState(false);
   const activeButtonaddLocation = () => {
     setAddLocation(!addLocation);
@@ -31,15 +34,28 @@ export const UserHeader = (props) => {
   const activeButtonCheckoutButton = () => {
     setCheckoutButton(!checkoutButton);
   };
-  const url = usePathname();
-  const isOrder = url.includes("order");
-  const isCart = url.includes("cart");
+  const [order, setOrder] = useState(false);
+  const activeButtonOrder = () => {
+    setOrder(!order);
+    setCart(false);
+  };
+  const [cart, setCart] = useState(false);
+  const activeButtonCart = () => {
+    setCart(!cart);
+    setOrder(false);
+  };
+
   const [foods, setFoods] = useState([]);
   useEffect(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("foodsCount");
       if (saved) setFoods(JSON.parse(saved));
+      setShoppingCart();
     }
+  }, []);
+  useEffect(() => {
+    setCart(true);
+    activeButtonCart(true);
   }, []);
   return (
     <div className="w-[1440px] h-[172px] bg-[#18181B] flex justify-between items-center">
@@ -151,22 +167,29 @@ export const UserHeader = (props) => {
             <div className="w-[471px] h-11 bg-white rounded-full flex justify-center items-center">
               <button
                 className={`w-[227px] h-9  rounded-full text-[18px] ${
-                  isCart ? "bg-[#EF4444] text-white" : "bg-white text-black"
+                  cart ? "bg-[#EF4444] text-white" : "bg-white text-black"
                 }`}
+                onClick={activeButtonCart}
               >
                 Cart
               </button>
               <button
                 className={`w-[227px] h-9  rounded-full text-[18px] ${
-                  isOrder ? "bg-[#EF4444] text-white" : "bg-white text-black"
+                  order ? "bg-[#EF4444] text-white" : "bg-white text-black"
                 }`}
+                onClick={activeButtonOrder}
               >
                 Order
               </button>
             </div>
-            {isOrder && (
+            {cart && (
               <>
-                <div className="w-[471px] h-[532px] bg-white rounded-2xl ">
+                <div
+                  className="w-[471px] h-[532px] bg-white rounded-2xl "
+                  onClick={() => {
+                    setOrder(false);
+                  }}
+                >
                   <p className="text-[#71717A] text-[21px] m-2">My cart</p>
                   {foods.length <= 0 ? (
                     <div
@@ -195,14 +218,16 @@ export const UserHeader = (props) => {
                         <ProductListEdit
                           key={`foods-${index}`}
                           foodName={cur.foodName}
-                          foodImgSrc={cur.image}
+                          foodImgSrc={cur.foodImgSrc}
                           foodPrice={cur.price}
                           ingredients={cur.ingredients}
+                          addFoodCount={cur.addFoodCount}
+                          foodId={cur.foodId}
                         />
                       ))}
                     </div>
                   )}
-                  <p className="text-[#71717A] text-[21px] ml-2">
+                  <p className="text-[#71717A] text-[21px] ml-2 mt-2">
                     Delivery location
                   </p>
                   <input
@@ -253,7 +278,7 @@ export const UserHeader = (props) => {
                         </p>
 
                         <p className="text-black font-bold w-[219px] h-7 text-4 ml-86">
-                          items
+                          {foodPrice}
                         </p>
                       </div>
                       <div className="flex justify-between">
@@ -279,20 +304,64 @@ export const UserHeader = (props) => {
                       </div>
                     </div>
                   )}
-                  <button
-                    className="w-[439px] h-11 flex justify-center items-center bg-[#EF4444] rounded-full mt-5 ml-3 text-white cursor-pointer"
-                    onClick={activeButtonCheckoutButton}
-                  >
-                    Checkout
-                  </button>
+                  {foods.length <= 0 ? (
+                    <button
+                      className="w-[439px] h-11 flex justify-center items-center bg-[#EF4444] opacity-45 rounded-full mt-5 ml-3 text-white cursor-pointer"
+                      onClick={activeButtonCheckoutButton}
+                    >
+                      Checkout
+                    </button>
+                  ) : (
+                    <button
+                      className="w-[439px] h-11 flex justify-center items-center bg-[#EF4444] rounded-full mt-5 ml-3 text-white cursor-pointer"
+                      onClick={activeButtonCheckoutButton}
+                    >
+                      Checkout
+                    </button>
+                  )}
                 </div>
               </>
             )}
-            {isOrder && (
-              <div className="w-[471px] h-[832px] bg-white rounded-2xl flex justify-center items-center flex-col">
-                <p className="text-black text-[21px] w-[439px] h-[29px]">
+            {order && (
+              <div
+                className="w-[471px] h-[832px] bg-white rounded-2xl flex items-center flex-col"
+                onClick={() => {
+                  setCart(false);
+                }}
+              >
+                <p className="text-black text-[21px] w-[439px] h-[29px] mt-2">
                   Orders History
                 </p>
+                <div className="w-[439px] h-[138px] flex flex-col justify-center items-center gap-3">
+                  <div className="flex justify-between w-[439px]">
+                    <p className="w-[138px] h-6 text-4 font-bold m-2">Items</p>
+                    <div className="w-[68px] h-6 m-2 flex justify-center items-center text-[11px] text-black rounded-full border">
+                      Delivered
+                    </div>
+                  </div>
+                  <div className="flex justify-between w-[415px] h-4">
+                    <div className=" flex justify-center items-center gap-2">
+                      <FoodIcon />
+                      <p className="text-[12px] text-[#71717A]">{foodName}</p>
+                    </div>
+                    <div className=" flex justify-center items-center">
+                      <p className="text-[12px] text-[#71717A]">x1</p>
+                    </div>
+                  </div>
+                  <div className="flex justify-start w-[415px] h-4">
+                    <div className=" flex justify-center items-center gap-2">
+                      <DateIconOrder />
+                      <p className="text-[12px] text-[#71717A]">on sar</p>
+                    </div>
+                  </div>
+                  <div className="flex justify-start w-[415px] h-4">
+                    <div className=" flex justify-center items-center gap-2">
+                      <LocationIconOrder />
+                      <p className="text-[12px] text-[#71717A]">{address}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="w-[439px] border border-dashed border-[#09090B80] opacity-50 m-3"></div>
               </div>
             )}
           </div>

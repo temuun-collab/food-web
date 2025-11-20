@@ -52,12 +52,14 @@ export const Footer = (props) => {
           </div>
           <div className="flex flex-col w-[320px] h-[228px]  gap-4 ">
             <p className="text-[#71717A] text-[16px]">MENU</p>
-            {categories.map((cur, index) => (
-              <FoodMenuCategoryName
-                key={`category-${index}`}
-                foodName={cur.categoryName}
-              />
-            ))}
+            <div className="grid grid-rows-5 h-[215px] ">
+              {categories.map((cur, index) => (
+                <FoodMenuCategoryName
+                  key={`category-${index}`}
+                  foodName={cur.categoryName}
+                />
+              ))}
+            </div>
           </div>
           <div className="flex flex-col w-[320px] h-72 gap-4 ">
             <p className="text-[#71717A] text-[16px]">FOLLOW US</p>
