@@ -13,34 +13,34 @@ import {
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useId, useState } from 'react'
-import { EyeIcon, EyeOffIcon } from 'lucide-react'
+import { useId, useState } from "react";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 export default function login() {
   const router = useRouter();
-const [isVisible, setIsVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(false);
 
- const [formInput, setFormInput]= useState({
-password: "",
-confirmPassword: "",
- })
- const [error, setError]= useState({
-password: "",
-confirmPassword: "",
- })
- const validateFormInput = (e)=>{
-  e.preventDefault();
-  let inputError = {
+  const [formInput, setFormInput] = useState({
+    password: "",
     confirmPassword: "",
+  });
+  const [error, setError] = useState({
+    password: "",
+    confirmPassword: "",
+  });
+  const validateFormInput = (e) => {
+    e.preventDefault();
+    let inputError = {
+      confirmPassword: "",
+    };
+    if (!formInput.password && !formInput.confirmPassword) {
+      setError({
+        ...inputError,
+        confirmPassword: "Weak password. Use numbers and symbols",
+      });
+    }
   };
-  if(!formInput.password && !formInput.confirmPassword){
-    setError({
-      ...inputError,
-      confirmPassword: "Weak password. Use numbers and symbols"
-    })
-  }
- }
 
-  const id = useId()
+  const id = useId();
   const handleSubmit = async () => {
     try {
       const res = await fetch("http://localhost:8000/users/login", {
@@ -72,26 +72,33 @@ confirmPassword: "",
           <CardDescription>
             Create a strong password with letters, numbers.
           </CardDescription>
-          
         </CardHeader>
 
         <CardContent>
           <form onSubmit={validateFormInput}>
             <div className="flex flex-col gap-6">
-              <div className='relative'>
-        <Input id={id} type={isVisible ? 'text' : 'password'} placeholder='Password' 
-                  className={`${error ? "border border-[#EF4444]" : "border pr-9"}`}
-                  defaultValue={formInput.confirmPassword}/>
-        <Button
-          variant='ghost'
-          size='icon'
-          // onClick={() => setIsVisible(prevState => !prevState)}
-          className='text-muted-foreground focus-visible:ring-ring/50 absolute inset-y-0 right-0 rounded-l-none hover:bg-transparent'
-        >
-          {isVisible ? <EyeOffIcon /> : <EyeIcon />}
-          <span className='sr-only'>{isVisible ? 'Hide password' : 'Show password'}</span>
-        </Button>
-      </div>
+              <div className="relative">
+                <Input
+                  id={id}
+                  type={isVisible ? "text" : "password"}
+                  placeholder="Password"
+                  className={`${
+                    error ? "border border-[#EF4444]" : "border pr-9"
+                  }`}
+                  defaultValue={formInput.confirmPassword}
+                />
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  // onClick={() => setIsVisible(prevState => !prevState)}
+                  className="text-muted-foreground focus-visible:ring-ring/50 absolute inset-y-0 right-0 rounded-l-none hover:bg-transparent"
+                >
+                  {isVisible ? <EyeOffIcon /> : <EyeIcon />}
+                  <span className="sr-only">
+                    {isVisible ? "Hide password" : "Show password"}
+                  </span>
+                </Button>
+              </div>
               <div className="grid gap-2">
                 {/* <Label htmlFor="password">Password</Label> */}
                 <Input
@@ -99,26 +106,25 @@ confirmPassword: "",
                   type="confirm"
                   placeholder="confirm"
                   required
-                  // onChange={({target})}
+                  onChange={{ target }}
                   className={`${error ? "border border-[#EF4444]" : "border"}`}
                   defaultValue={formInput.confirmPassword}
                 />
-                
               </div>
             </div>
           </form>
         </CardContent>
-       <CardFooter className="flex-col gap-2">
+        <CardFooter className="flex-col gap-2">
           <Link href="/login">
-             <Button
-            type="submit"
-            className="w-full bg-gray-300 w-85 h-9"
-            onclick={handleSubmit}
-          >
-            Let's Go
-          </Button>
+            <Button
+              type="submit"
+              className="w-full bg-gray-300 w-85 h-9"
+              onclick={handleSubmit}
+            >
+              Let's Go
+            </Button>
           </Link>
-         
+
           <div className="flex justify-center items-center w-[416px] h-[25px]">
             <CardDescription>Already have an account?</CardDescription>
             <Link href="/login">
