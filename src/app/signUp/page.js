@@ -12,44 +12,50 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
-const options = {
-  method: "GET",
-  headers: {
-    accept: "application/json",
-    Authorization:
-      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4NzZiMzEwNzJlZDg5ODcwMzQxM2Y0NzkyYzZjZTdjYyIsIm5iZiI6MTczODAyNjY5NS44NCwic3ViIjoiNjc5ODJlYzc3MDJmNDkyZjQ3OGY2OGUwIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.k4OF9yGrhA2gZ4VKCH7KLnNBB2LIf1Quo9c3lGF6toE",
-  },
-};
 export default function signUp() {
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-  const getData = async () => {
-    const data = await fetch(`http://localhost:8000/users`, options);
-    const jsonData = await data.json();
-    setEmail(jsonData);
-    console.log(jsonData);
-  };
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (!emailRegex.test(email)) {
-      setError("Invalid email. Use a format like example@email.com");
+  if (!emailRegex.test(email)) {
+    setError("Invalid email format");
+    return;
+  }
+  try {
+    const res = await fetch("http://localhost:8000/users",{
+  method: "POST",
+  headers: {
+    accept: "application/json",
+  },
+  body: JSON.stringify({
+          email,
+          password,
+        }),
+});
+    const json = await res.json();
+    console.log(json);
+
+    if (!res.ok) {
+      setError(json.message || "Failed to sign up");
       return;
     }
-  };
-  useEffect(() => {
-    getData();
-  }, []);
+  } catch (err) {
+    console.error(err);
+    setError("Something went wrong");
+  }
+};
+
+  
 
   return (
     // <div className="flex justify-evenly items-center h-screen w-screen">
     <form
-      onSubmit={handleSubmit}
+      
       className="flex justify-evenly items-center h-screen w-screen"
     >
       <Card className="w-full max-w-sm border-hidden">
@@ -76,13 +82,16 @@ export default function signUp() {
           </div>
         </CardContent>
         <CardFooter className="flex-col gap-2">
-          <Button
+          <Link href="/password">
+             <Button
             type="submit"
-            className="w-full bg-gray-300"
-            onChange={(e) => setEmail(e.target.value)}
+            className="w-full bg-gray-300 w-85 h-9"
+            onclick={handleSubmit}
           >
             Let's Go
           </Button>
+          </Link>
+         
           <div className="flex justify-center items-center w-[416px] h-[25px]">
             <CardDescription>Already have an account?</CardDescription>
             <Link href="/login">
