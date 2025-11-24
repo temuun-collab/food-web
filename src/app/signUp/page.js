@@ -1,62 +1,76 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardAction,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
+  CardDescription,
+  CardFooter,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
+import { Input } from "@/components/ui/input";
 import Link from "next/link";
-export default function signUp() {
+import { useState } from "react";
+export default function SignUp() {
   const [error, setError] = useState("");
-  const [email, setEmail] = useState("");
+  const [formInput, setFormInput] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  const handleChange = (e) => {
+    setFormInput({ ...formInput, [e.target.id]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (!emailRegex.test(email)) {
-    setError("Invalid email format");
-    return;
-  }
-  try {
-    const res = await fetch("http://localhost:8000/users",{
-  method: "POST",
-  headers: {
-    accept: "application/json",
-  },
-  body: JSON.stringify({
+    const { email, password, confirmPassword } = formInput;
+
+    if (!emailRegex.test(email)) {
+      setError("Invalid email format");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    try {
+      // const res = await fetch("http://localhost:8000/users", {
+      //   method: "POST",
+      //   headers: {
+      //     "content-type": "application/json",
+      //   },
+      //   body: JSON.stringify({ email, password }),
+      // });
+      const res = await fetch("http://localhost:8000/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+        },
+        body: JSON.stringify({
           email,
           password,
         }),
-});
-    const json = await res.json();
-    console.log(json);
+      });
 
-    if (!res.ok) {
-      setError(json.message || "Failed to sign up");
-      return;
+      const json = await res.json();
+      console.log("User created:", json);
+    } catch (err) {
+      setError("Something went wrong");
+      console.error(err);
     }
-  } catch (err) {
-    console.error(err);
-    setError("Something went wrong");
-  }
-};
-
-  
+  };
 
   return (
-    // <div className="flex justify-evenly items-center h-screen w-screen">
     <form
-      
       className="flex justify-evenly items-center h-screen w-screen"
+      onSubmit={handleSubmit}
     >
       <Card className="w-full max-w-sm border-hidden">
         <CardHeader>
@@ -64,46 +78,57 @@ export default function signUp() {
           <CardDescription>
             Sign up to explore your favorite dishes.
           </CardDescription>
-          <CardAction></CardAction>
         </CardHeader>
 
         <CardContent>
           <div className="flex flex-col gap-6">
             <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
+              <Label>Email</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="Enter your email address"
-                required
-                className={`${error ? "border border-[#EF4444]" : "border"}`}
+                placeholder="Enter your email"
+                value={formInput.email}
+                onChange={handleChange}
               />
+
+              <Label>Password</Label>
+              <Input
+                id="password"
+                type="password"
+                placeholder="Password"
+                value={formInput.password}
+                onChange={handleChange}
+              />
+              <Label>Confirm Password</Label>
+              <Input
+                id="confirmPassword"
+                type="password"
+                placeholder="Confirm password"
+                value={formInput.confirmPassword}
+                onChange={handleChange}
+              />
+
+              {error && <p className="text-red-500">{error}</p>}
             </div>
           </div>
         </CardContent>
+
         <CardFooter className="flex-col gap-2">
-          <Link href="/password">
-             <Button
-            type="submit"
-            className="w-full bg-gray-300 w-85 h-9"
-            onclick={handleSubmit}
-          >
+          <Button type="submit" className="w-full bg-gray-300 h-9">
             Let's Go
           </Button>
-          </Link>
-         
-          <div className="flex justify-center items-center w-[416px] h-[25px]">
+
+          <div className="flex justify-center items-center">
             <CardDescription>Already have an account?</CardDescription>
             <Link href="/login">
-              <Button variant="link" className="text-4">
-                Log in
-              </Button>
+              <Button variant="link">Log in</Button>
             </Link>
           </div>
         </CardFooter>
       </Card>
+
       <img src="./headerPhoto.png" className="w-[856px] h-[904px] rounded-md" />
     </form>
-    // </div>
   );
 }

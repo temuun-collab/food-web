@@ -12,10 +12,18 @@ import { ProductListEdit } from "../_component/ProductListEdit";
 import { DeleteIcon } from "../downicon/DeleteIcon";
 import Link from "next/link";
 import { CartFoodIcon } from "../downicon/CartFoodIcon";
-import { FoodIcon } from "../downicon/FoodIcon";
-import { DateIconOrder } from "../downicon/DateIconOrder";
-import { LocationIconOrder } from "../downicon/LocationIconOrder";
 
+import { LocationIconOrder } from "../downicon/LocationIconOrder";
+import { FoodNameOrder } from "../_component/FoodNameOrder";
+import { DateOrder } from "../_component/DateOrder";
+const options = {
+  method: "GET",
+  headers: {
+    accept: "application/json",
+    Authorization:
+      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4NzZiMzEwNzJlZDg5ODcwMzQxM2Y0NzkyYzZjZTdjYyIsIm5iZiI6MTczODAyNjY5NS44NCwic3ViIjoiNjc5ODJlYzc3MDJmNDkyZjQ3OGY2OGUwIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.k4OF9yGrhA2gZ4VKCH7KLnNBB2LIf1Quo9c3lGF6toE",
+  },
+};
 export const UserHeader = (props) => {
   const { foodPrice, foodName, address } = props;
   const [addLocation, setAddLocation] = useState(false);
@@ -44,7 +52,19 @@ export const UserHeader = (props) => {
     setCart(!cart);
     setOrder(false);
   };
-
+  const [error, setError] = useState({
+    password: "",
+    confirmPassword: "",
+  });
+  // const [foodsOrder, setFoodsOrder] = useState([]);
+  // const foodOrders = async () => {
+  //   const data = await fetch(`http://localhost:8000/foodsOrder`, options);
+  //   const jsonData = await data.json();
+  //   setFoodsOrder(jsonData);
+  // };
+  // useEffect(() => {
+  //   getData();
+  // }, []);
   const [foods, setFoods] = useState([]);
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -53,10 +73,40 @@ export const UserHeader = (props) => {
       setShoppingCart();
     }
   }, []);
+  const foodData = async () => {
+    const data = await fetch(`http://localhost:8000/foods`, options);
+    const jsonData = await data.json();
+    setFoods(jsonData);
+  };
+  const handleSubmit = async () => {
+    try {
+      const res = await fetch("http://localhost:8000/users", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          accept: "application/json",
+        },
+        body: JSON.stringify({
+          address: address,
+        }),
+      });
+
+      const { token } = await res.json();
+      localStorage.setItem("token", token);
+    } catch (err) {
+      setError("add address");
+    }
+  };
   useEffect(() => {
     setCart(true);
     activeButtonCart(true);
   }, []);
+  useEffect(() => {
+    foodData();
+  }, []);
+  // useEffect(() => {
+  //   foodOrders();
+  // }, []);
   return (
     <div className="w-[1440px] h-[172px] bg-[#18181B] flex justify-between items-center">
       <div className="flex w-[165px] h-11 m-22 gap-3 justify-center items-center">
@@ -128,7 +178,9 @@ export const UserHeader = (props) => {
 
             <input
               placeholder="Please share your complete address"
-              className="w-[454px] h-20 border rounded-md text-black "
+              className={`w-[454px] h-20 rounded-md text-black ${
+                error ? "border border-[#EF4444] " : "border"
+              }`}
             />
 
             <div className="w-[454px] h-16 flex justify-end items-end gap-2">
@@ -140,7 +192,10 @@ export const UserHeader = (props) => {
               >
                 Cancel
               </button>
-              <button className="w-[115px] h-10 bg-black rounded-md flex justify-center items-center text-white text-[14px] cursor-pointer">
+              <button
+                className="w-[115px] h-10 bg-black rounded-md flex justify-center items-center text-white text-[14px] cursor-pointer"
+                onClick={handleSubmit}
+              >
                 Add category
               </button>
             </div>
@@ -307,7 +362,7 @@ export const UserHeader = (props) => {
                   {foods.length <= 0 ? (
                     <button
                       className="w-[439px] h-11 flex justify-center items-center bg-[#EF4444] opacity-45 rounded-full mt-5 ml-3 text-white cursor-pointer"
-                      onClick={activeButtonCheckoutButton}
+                      // onClick={activeButtonCheckoutButton}
                     >
                       Checkout
                     </button>
@@ -339,20 +394,21 @@ export const UserHeader = (props) => {
                       Delivered
                     </div>
                   </div>
-                  <div className="flex justify-between w-[415px] h-4">
-                    <div className=" flex justify-center items-center gap-2">
-                      <FoodIcon />
-                      <p className="text-[12px] text-[#71717A]">{foodName}</p>
+
+                  {/* {foods.map((cur, index) => (
+                    <div className="flex justify-between w-[415px] h-4">
+                      <FoodNameOrder
+                        key={`foods-${index}`}
+                        foodName={cur.foodName}
+                      />
+                      <div className=" flex justify-center items-center">
+                        <p className="text-[12px] text-[#71717A]">x1</p>
+                      </div>
                     </div>
-                    <div className=" flex justify-center items-center">
-                      <p className="text-[12px] text-[#71717A]">x1</p>
-                    </div>
-                  </div>
+                  ))} */}
+
                   <div className="flex justify-start w-[415px] h-4">
-                    <div className=" flex justify-center items-center gap-2">
-                      <DateIconOrder />
-                      <p className="text-[12px] text-[#71717A]">on sar</p>
-                    </div>
+                    <DateOrder />
                   </div>
                   <div className="flex justify-start w-[415px] h-4">
                     <div className=" flex justify-center items-center gap-2">
@@ -390,10 +446,11 @@ export const UserHeader = (props) => {
                   Log in
                 </button>
               </Link>
-
-              <button className="rounded-md bg-white border w-[182px] h-10 text-[14px] flex justify-center items-center cursor-pointer">
-                Sign up
-              </button>
+              <Link href="/signUp">
+                <button className="rounded-md bg-white border w-[182px] h-10 text-[14px] flex justify-center items-center cursor-pointer">
+                  Sign up
+                </button>
+              </Link>
             </div>
           </div>
         </div>

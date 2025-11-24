@@ -43,7 +43,7 @@ export default function login() {
   const id = useId();
   const handleSubmit = async () => {
     try {
-      const res = await fetch("http://localhost:8000/users/login", {
+      const res = await fetch("http://localhost:8000/users", {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -106,7 +106,7 @@ export default function login() {
                   type="confirm"
                   placeholder="confirm"
                   required
-                  onChange={{ target }}
+                  // onChange={{ target }}
                   className={`${error ? "border border-[#EF4444]" : "border"}`}
                   defaultValue={formInput.confirmPassword}
                 />

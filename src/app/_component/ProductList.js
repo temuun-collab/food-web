@@ -2,7 +2,7 @@
 import { AddFoodIcon } from "../downicon/AddFoodIcon";
 import { CheckFood } from "../downicon/CheckFood";
 import { CheckIcon } from "../downicon/CheckIcon";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BackIcon } from "../downicon/BackIcon";
 import { NextIcon } from "../downicon/NextIcon";
 import { DeleteIcon } from "../downicon/DeleteIcon";
@@ -16,6 +16,7 @@ export const ProductList = (props) => {
   const activeButtonFalseCheckFood = () => {
     setFalseCheckFood(!falsecheckFood);
   };
+
   const [editFood, setEditFood] = useState(false);
   const [addFoodCount, setAddFoodCount] = useState(1);
   const [nextClick, setNextClick] = useState(false);
@@ -43,26 +44,20 @@ export const ProductList = (props) => {
       foodId,
       addFoodCount: 1,
     };
+
     const addCarts = JSON.parse(localStorage.getItem("foodsCount") || "[]");
-    const match = addCarts.find((item) => {
-      return item.foodId === foodId;
-    });
+
+    const match = addCarts.find((item) => item.foodId === foodId);
+
     if (match) {
       match.addFoodCount += 1;
-    } else if (!match) {
-      localStorage.setItem("foodsCount", JSON.stringify(addCarts));
-      setEditFood(false);
     } else {
-      localStorage.setItem(
-        "foodsCount",
-        JSON.stringify([...addCarts, foodsCount])
-      );
+      addCarts.push(foodsCount);
     }
-    // if
 
-    // 1. addCarts dotor foodId tai adil id tai element baina uu
-    // 2. hervee baival addCarts dotor baigaa ter element ii count iig ihesgii
-    // 3. hervee baihgui baival shineer uusgii
+    localStorage.setItem("foodsCount", JSON.stringify(addCarts));
+
+    setEditFood(false);
   };
 
   const activeButtonEditFood = () => {

@@ -84,8 +84,9 @@ export default function login() {
                 />
                 <div className="flex flex-col">
                   <p className="text-[14px] text-[#EF4444] ">{error}</p>
+
                   <a
-                    href="#"
+                    href="/password"
                     className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                   >
                     Forgot your password?
