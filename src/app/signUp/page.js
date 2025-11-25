@@ -12,7 +12,10 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+
 export default function SignUp() {
+  const router = useRouter();
   const [error, setError] = useState("");
   const [formInput, setFormInput] = useState({
     email: "",
@@ -40,14 +43,7 @@ export default function SignUp() {
     }
 
     try {
-      // const res = await fetch("http://localhost:8000/users", {
-      //   method: "POST",
-      //   headers: {
-      //     "content-type": "application/json",
-      //   },
-      //   body: JSON.stringify({ email, password }),
-      // });
-      const res = await fetch("http://localhost:8000/users", {
+      await fetch("http://localhost:8000/users", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -58,11 +54,8 @@ export default function SignUp() {
           password,
         }),
       });
-
-      const json = await res.json();
-      console.log("User created:", json);
+      router.push("/login");
     } catch (err) {
-      setError("Something went wrong");
       console.error(err);
     }
   };
@@ -115,7 +108,7 @@ export default function SignUp() {
         </CardContent>
 
         <CardFooter className="flex-col gap-2">
-          <Button type="submit" className="w-full bg-gray-300 h-9">
+          <Button type="submit" className="w-[345px] bg-gray-300 h-9">
             Let's Go
           </Button>
 

@@ -1,20 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DateIcon } from "../downicon/DateIcon";
 import { FoodMore } from "../downicon/FoodMore";
+import { FoodMoreOrder } from "./FoodMoreOrder";
 
 export const TableColumn = (props) => {
-  const {
-    email,
-    foodsNumber,
-    date,
-    total,
-    address,
-    number,
-    foodSrc,
-    foodName,
-    foodsNumberMore,
-  } = props;
+  const { email, foodsNumber, date, total, address, number } = props;
   const [foodMore, setFoodMore] = useState(false);
   const activeButtonFoodMore = () => {
     setFoodMore(!foodMore);
@@ -23,7 +14,13 @@ export const TableColumn = (props) => {
   const activeButtonStatus = () => {
     setStatus(!status);
   };
-
+  // const [foods, setFoods] = useState([]);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("foodsCount");
+      if (saved) setFoodMore(JSON.parse(saved));
+    }
+  }, []);
   return (
     <div className="w-[1171px] h-[52px] bg-[#F4F4F5CC] flex ">
       <div className="w-12 h-[52px] flex justify-center items-center">
@@ -44,17 +41,9 @@ export const TableColumn = (props) => {
 
         <FoodMore />
 
-        {foodMore && (
-          <div className="w-[263px] h-[97px] bg-white rounded-md border border-gray flex justify-center items-center absolute top-75">
-            <div className="flex flex-col">
-              <div className="flex w-[230px] h-[30px] ">
-                <img className="w-8 h-[30px]" src={foodSrc} />
-                <p className="text-3 text-black">{foodName}</p>
-                <p className="text-3 text-black">{foodsNumberMore}</p>
-              </div>
-            </div>
-          </div>
-        )}
+        {foodMore.map((cur, index) => (
+          <FoodMoreOrder />
+        ))}
       </div>
       <div className="w-40 h-[52px] flex gap-25 items-center">
         <p className="text-[14px] text-[#71717A]">{date}</p>

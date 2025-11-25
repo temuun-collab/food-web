@@ -12,20 +12,21 @@ import { ProductListEdit } from "../_component/ProductListEdit";
 import { DeleteIcon } from "../downicon/DeleteIcon";
 import Link from "next/link";
 import { CartFoodIcon } from "../downicon/CartFoodIcon";
-
-import { LocationIconOrder } from "../downicon/LocationIconOrder";
+import { useRouter } from "next/navigation";
 import { FoodNameOrder } from "../_component/FoodNameOrder";
-import { DateOrder } from "../_component/DateOrder";
-const options = {
-  method: "GET",
-  headers: {
-    accept: "application/json",
-    Authorization:
-      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4NzZiMzEwNzJlZDg5ODcwMzQxM2Y0NzkyYzZjZTdjYyIsIm5iZiI6MTczODAyNjY5NS44NCwic3ViIjoiNjc5ODJlYzc3MDJmNDkyZjQ3OGY2OGUwIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.k4OF9yGrhA2gZ4VKCH7KLnNBB2LIf1Quo9c3lGF6toE",
-  },
-};
+import { Button } from "@/components/ui/button";
+
+// const options = {
+//   method: "GET",
+//   headers: {
+//     accept: "application/json",
+//     Authorization:
+//       "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4NzZiMzEwNzJlZDg5ODcwMzQxM2Y0NzkyYzZjZTdjYyIsIm5iZiI6MTczODAyNjY5NS44NCwic3ViIjoiNjc5ODJlYzc3MDJmNDkyZjQ3OGY2OGUwIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.k4OF9yGrhA2gZ4VKCH7KLnNBB2LIf1Quo9c3lGF6toE",
+//   },
+// };
 export const UserHeader = (props) => {
   const { foodPrice, foodName, address } = props;
+  const router = useRouter();
   const [addLocation, setAddLocation] = useState(false);
   const activeButtonaddLocation = () => {
     setAddLocation(!addLocation);
@@ -38,8 +39,9 @@ export const UserHeader = (props) => {
   const activeButtonShoppingCart = () => {
     setShoppingCart(!shoppingCart);
   };
+
   const [checkoutButton, setCheckoutButton] = useState(false);
-  const activeButtonCheckoutButton = () => {
+  const activeButtonCheckoutButton = async () => {
     setCheckoutButton(!checkoutButton);
   };
   const [order, setOrder] = useState(false);
@@ -56,15 +58,6 @@ export const UserHeader = (props) => {
     password: "",
     confirmPassword: "",
   });
-  // const [foodsOrder, setFoodsOrder] = useState([]);
-  // const foodOrders = async () => {
-  //   const data = await fetch(`http://localhost:8000/foodsOrder`, options);
-  //   const jsonData = await data.json();
-  //   setFoodsOrder(jsonData);
-  // };
-  // useEffect(() => {
-  //   getData();
-  // }, []);
   const [foods, setFoods] = useState([]);
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -73,11 +66,7 @@ export const UserHeader = (props) => {
       setShoppingCart();
     }
   }, []);
-  const foodData = async () => {
-    const data = await fetch(`http://localhost:8000/foods`, options);
-    const jsonData = await data.json();
-    setFoods(jsonData);
-  };
+
   const handleSubmit = async () => {
     try {
       const res = await fetch("http://localhost:8000/users", {
@@ -101,12 +90,6 @@ export const UserHeader = (props) => {
     setCart(true);
     activeButtonCart(true);
   }, []);
-  useEffect(() => {
-    foodData();
-  }, []);
-  // useEffect(() => {
-  //   foodOrders();
-  // }, []);
   return (
     <div className="w-[1440px] h-[172px] bg-[#18181B] flex justify-between items-center">
       <div className="flex w-[165px] h-11 m-22 gap-3 justify-center items-center">
@@ -387,37 +370,14 @@ export const UserHeader = (props) => {
                 <p className="text-black text-[21px] w-[439px] h-[29px] mt-2">
                   Orders History
                 </p>
-                <div className="w-[439px] h-[138px] flex flex-col justify-center items-center gap-3">
-                  <div className="flex justify-between w-[439px]">
-                    <p className="w-[138px] h-6 text-4 font-bold m-2">Items</p>
-                    <div className="w-[68px] h-6 m-2 flex justify-center items-center text-[11px] text-black rounded-full border">
-                      Delivered
-                    </div>
-                  </div>
-
-                  {/* {foods.map((cur, index) => (
-                    <div className="flex justify-between w-[415px] h-4">
-                      <FoodNameOrder
-                        key={`foods-${index}`}
-                        foodName={cur.foodName}
-                      />
-                      <div className=" flex justify-center items-center">
-                        <p className="text-[12px] text-[#71717A]">x1</p>
-                      </div>
-                    </div>
-                  ))} */}
-
-                  <div className="flex justify-start w-[415px] h-4">
-                    <DateOrder />
-                  </div>
-                  <div className="flex justify-start w-[415px] h-4">
-                    <div className=" flex justify-center items-center gap-2">
-                      <LocationIconOrder />
-                      <p className="text-[12px] text-[#71717A]">{address}</p>
-                    </div>
-                  </div>
+                <div className="grid gap-2">
+                  {foods.map((cur, index) => (
+                    <FoodNameOrder
+                      key={`foods-${index}`}
+                      foodName={cur.foodName}
+                    />
+                  ))}
                 </div>
-                <div className="w-[439px] border border-dashed border-[#09090B80] opacity-50 m-3"></div>
               </div>
             )}
           </div>
@@ -425,33 +385,17 @@ export const UserHeader = (props) => {
       )}
       {checkoutButton && (
         <div className="fixed  z-50 top-0 left-0 w-screen h-screen flex justify-center items-center bg-[rgba(0,_0,_0,_0.5)]">
-          <div className="w-[429px] h-[184px] bg-white rounded-md gap-5 flex flex-col justify-center items-center">
-            <div className="w-[381px] h-10 flex justify-center items-center gap-7">
-              <p className="text-[25px] text-black font-bold">
-                You need to log in first{" "}
-              </p>
-              <button
-                className="w-9 h-9 flex justify-center items-center rounded-full bg-gray-100 cursor-pointer"
-                onClick={() => {
-                  setCheckoutButton(false);
-                }}
-              >
-                <DeleteIcon />
-              </button>
-            </div>
-
-            <div className="w-[381px] h-[60px] flex gap-4 ">
-              <Link href="/login">
-                <button className="rounded-md bg-black w-[182px] h-10 text-[14px] flex justify-center items-center text-white cursor-pointer">
-                  Log in
-                </button>
-              </Link>
-              <Link href="/signUp">
-                <button className="rounded-md bg-white border w-[182px] h-10 text-[14px] flex justify-center items-center cursor-pointer">
-                  Sign up
-                </button>
-              </Link>
-            </div>
+          <div className="w-[664px] h-[439px] bg-white rounded-md gap-5 flex flex-col justify-center items-center">
+            <h3>Your order has been successfully placed !</h3>
+            <img src="./succes.png" className="w-[156px] h-[265px]"></img>
+            <Button
+              variant="secondary"
+              onClick={() => {
+                setCheckoutButton(false);
+              }}
+            >
+              Back to home
+            </Button>
           </div>
         </div>
       )}
