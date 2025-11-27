@@ -3,7 +3,7 @@
 import { AddLocationIcon } from "../downicon/AddLocationIcon";
 import { Headericon } from "../downicon/headericon";
 import { LocationIcon } from "../downicon/LocationIcon";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { ShoppingCart } from "../downicon/ShoppingCart";
 import { User } from "../downicon/UserIcon";
 import { ShoppingCartIcon } from "../downicon/ShoppingCartIcon";
@@ -15,25 +15,19 @@ import { CartFoodIcon } from "../downicon/CartFoodIcon";
 import { useRouter } from "next/navigation";
 import { FoodNameOrder } from "../_component/FoodNameOrder";
 import { Button } from "@/components/ui/button";
+import { AuthContext } from "../_context/AuthProvider";
 
-// const options = {
-//   method: "GET",
-//   headers: {
-//     accept: "application/json",
-//     Authorization:
-//       "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4NzZiMzEwNzJlZDg5ODcwMzQxM2Y0NzkyYzZjZTdjYyIsIm5iZiI6MTczODAyNjY5NS44NCwic3ViIjoiNjc5ODJlYzc3MDJmNDkyZjQ3OGY2OGUwIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.k4OF9yGrhA2gZ4VKCH7KLnNBB2LIf1Quo9c3lGF6toE",
-//   },
-// };
 export const UserHeader = (props) => {
   const { foodPrice, foodName, address } = props;
+  const { token } = useContext(AuthContext);
   const router = useRouter();
   const [addLocation, setAddLocation] = useState(false);
   const activeButtonaddLocation = () => {
     setAddLocation(!addLocation);
   };
-  const [user, setUser] = useState(false);
-  const activeButtonUser = () => {
-    setUser(!user);
+  const [users, setusers] = useState(false);
+  const activeButtonusers = () => {
+    setusers(!users);
   };
   const [shoppingCart, setShoppingCart] = useState(false);
   const activeButtonShoppingCart = () => {
@@ -90,6 +84,7 @@ export const UserHeader = (props) => {
     setCart(true);
     activeButtonCart(true);
   }, []);
+
   return (
     <div className="w-[1440px] h-[172px] bg-[#18181B] flex justify-between items-center">
       <div className="flex w-[165px] h-11 m-22 gap-3 justify-center items-center">
@@ -127,15 +122,15 @@ export const UserHeader = (props) => {
         </div>
         <div
           className="w-9 h-9 bg-[#EF4444] rounded-full flex justify-center items-center"
-          onClick={activeButtonUser}
+          onClick={activeButtonusers}
         >
           <User />
         </div>
       </div>
-      {user && (
+      {users && (
         <div className="fixed z-10 top-0 left-0 w-screen h-screen flex justify-center mt-30 ml-160">
           <div className="min-w-[188px] h-[104px] bg-white rounded-md border-hidden flex flex-col items-center justify-center mr-22 gap-2">
-            <p className="text-black text-[19px] ">test@gmail.com</p>
+            <p className="text-black text-[19px] ">{token.email}</p>
             <button className="bg-[#F4F4F5] w-20 h-9 text-[14px] flex justify-center items-center rounded-full cursor-pointer">
               Sign Out
             </button>

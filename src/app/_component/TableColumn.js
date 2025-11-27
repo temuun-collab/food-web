@@ -41,9 +41,9 @@ export const TableColumn = (props) => {
 
         <FoodMore />
 
-        {foodMore.map((cur, index) => (
+        {/* {foodMore.map((cur, index) => (
           <FoodMoreOrder />
-        ))}
+        ))} */}
       </div>
       <div className="w-40 h-[52px] flex gap-25 items-center">
         <p className="text-[14px] text-[#71717A]">{date}</p>

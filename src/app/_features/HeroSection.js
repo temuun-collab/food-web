@@ -22,6 +22,7 @@ export const HeroSection = () => {
   useEffect(() => {
     getData();
   }, []);
+  console.log(foodsOrder, "kk");
 
   return (
     <div className="w-[1171px] h-[948px] bg-[#F4F4F5CC] flex mt-5 flex-col ">
