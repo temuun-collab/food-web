@@ -12,17 +12,17 @@ const options = {
       "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4NzZiMzEwNzJlZDg5ODcwMzQxM2Y0NzkyYzZjZTdjYyIsIm5iZiI6MTczODAyNjY5NS44NCwic3ViIjoiNjc5ODJlYzc3MDJmNDkyZjQ3OGY2OGUwIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.k4OF9yGrhA2gZ4VKCH7KLnNBB2LIf1Quo9c3lGF6toE",
   },
 };
+const backend_url = process.env.BACKEND_URL;
 export const HeroSection = () => {
   const [foodsOrder, setFoodsOrder] = useState([]);
   const getData = async () => {
-    const data = await fetch(`http://localhost:8000/foodsOrder`, options);
+    const data = await fetch(`${backend_url}/foodsOrder`, options);
     const jsonData = await data.json();
     setFoodsOrder(jsonData);
   };
   useEffect(() => {
     getData();
   }, []);
-  console.log(foodsOrder, "kk");
 
   return (
     <div className="w-[1171px] h-[948px] bg-[#F4F4F5CC] flex mt-5 flex-col ">

@@ -12,6 +12,7 @@ const options = {
       "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4NzZiMzEwNzJlZDg5ODcwMzQxM2Y0NzkyYzZjZTdjYyIsIm5iZiI6MTczODAyNjY5NS44NCwic3ViIjoiNjc5ODJlYzc3MDJmNDkyZjQ3OGY2OGUwIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.k4OF9yGrhA2gZ4VKCH7KLnNBB2LIf1Quo9c3lGF6toE",
   },
 };
+const backend_url = process.env.BACKEND_URL;
 export const AddFoodMore = (props) => {
   const UPLOAD_PRESET = "food-web";
 
@@ -44,7 +45,7 @@ export const AddFoodMore = (props) => {
   const [foods, setFoods] = useState([]);
   const [uploading, setUploading] = useState(false);
   const getData = async () => {
-    const data = await fetch(`http://localhost:8000/foods`, options);
+    const data = await fetch(`${backend_url}/foods`, options);
     const jsonData = await data.json();
     setFoods(jsonData);
   };
@@ -83,7 +84,7 @@ export const AddFoodMore = (props) => {
     console.log(token);
 
     try {
-      const res = await fetch("http://localhost:8000/foods", {
+      const res = await fetch(`${backend_url}/foods`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -111,7 +112,7 @@ export const AddFoodMore = (props) => {
     console.log(token);
 
     try {
-      const res = await fetch("http://localhost:8000/foods", {
+      const res = await fetch(`${backend_url}/foods`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

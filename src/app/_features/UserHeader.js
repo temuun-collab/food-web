@@ -17,7 +17,7 @@ import { FoodNameOrder } from "../_component/FoodNameOrder";
 import { Button } from "@/components/ui/button";
 import { AuthContext } from "../_context/AuthProvider";
 import { FoodPriceInf } from "../_component/FoodPriceInf";
-
+const backend_url = process.env.BACKEND_URL;
 export const UserHeader = (props) => {
   // const {  } = props;
   const { user } = useContext(AuthContext);
@@ -54,7 +54,7 @@ export const UserHeader = (props) => {
       status: "PENDING",
     };
     try {
-      await fetch("http://localhost:8000/foodsOrder", {
+      await fetch(`${backend_url}foodsOrder`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -95,7 +95,7 @@ export const UserHeader = (props) => {
 
   const handleSubmit = async () => {
     try {
-      const res = await fetch("http://localhost:8000/users", {
+      const res = await fetch(`${backend_url}/users`, {
         method: "POST",
         headers: {
           "content-type": "application/json",

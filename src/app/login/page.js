@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
+const backend_url = process.env.BACKEND_URL;
 export default function login() {
   const router = useRouter();
 
@@ -24,7 +25,7 @@ export default function login() {
 
   const handleSubmit = async () => {
     try {
-      const res = await fetch("http://localhost:8000/users/login", {
+      const res = await fetch(`${backend_url}/users/login`, {
         method: "POST",
         headers: {
           "content-type": "application/json",

@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useEffect, useState } from "react";
-
+const backend_url = process.env.BACKEND_URL;
 export const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
 
   const getUser = async (token) => {
     try {
-      const rawData = await fetch("http://localhost:8000/users/me", {
+      const rawData = await fetch(`${backend_url}/users/me`, {
         method: "GET",
         headers: {
           authorization: token,

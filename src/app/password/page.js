@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useId, useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
+const backend_url = process.env.BACKEND_URL;
 export default function login() {
   const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
@@ -43,7 +44,7 @@ export default function login() {
   const id = useId();
   const handleSubmit = async () => {
     try {
-      const res = await fetch("http://localhost:8000/users", {
+      const res = await fetch(`${backend_url}users`, {
         method: "POST",
         headers: {
           "content-type": "application/json",

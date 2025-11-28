@@ -15,6 +15,7 @@ const options = {
       "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4NzZiMzEwNzJlZDg5ODcwMzQxM2Y0NzkyYzZjZTdjYyIsIm5iZiI6MTczODAyNjY5NS44NCwic3ViIjoiNjc5ODJlYzc3MDJmNDkyZjQ3OGY2OGUwIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.k4OF9yGrhA2gZ4VKCH7KLnNBB2LIf1Quo9c3lGF6toE",
   },
 };
+const backend_url = process.env.BACKEND_URL;
 export const AddFood = (props) => {
   const router = useRouter();
   const { foodAddMore, foodId, foodCount, category } = props;
@@ -69,7 +70,7 @@ export const AddFood = (props) => {
   const [foods, setFoods] = useState([]);
 
   const getData = async () => {
-    const data = await fetch(`http://localhost:8000/foods`, options);
+    const data = await fetch(`${backend_url}/foods`, options);
     const jsonData = await data.json();
     setFoods(jsonData);
     console.log(jsonData);
@@ -94,7 +95,7 @@ export const AddFood = (props) => {
     console.log(token);
 
     try {
-      const res = await fetch("http://localhost:8000/foods", {
+      const res = await fetch(`${backend_url}/foods`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -125,7 +126,7 @@ export const AddFood = (props) => {
   };
   const [categoryFoods, setCategories] = useState([]);
   const foodsCategory = async () => {
-    const data = await fetch(`http://localhost:8000/foodsCategory`, options);
+    const data = await fetch(`${backend_url}/foodsCategory`, options);
     const jsonData = await data.json();
     setCategories(jsonData);
   };

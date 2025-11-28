@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-
+const backend_url = process.env.BACKEND_URL;
 export default function SignUp() {
   const router = useRouter();
   const [error, setError] = useState("");
@@ -43,7 +43,7 @@ export default function SignUp() {
     }
 
     try {
-      await fetch("http://localhost:8000/users", {
+      await fetch(`${backend_url}/users`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
