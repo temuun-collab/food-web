@@ -16,10 +16,15 @@ import { useRouter } from "next/navigation";
 import { FoodNameOrder } from "../_component/FoodNameOrder";
 import { Button } from "@/components/ui/button";
 import { AuthContext } from "../_context/AuthProvider";
+import { FoodPriceInf } from "../_component/FoodPriceInf";
 
 export const UserHeader = (props) => {
-  const { foodPrice, foodName, address } = props;
-  const { token } = useContext(AuthContext);
+  // const {  } = props;
+  const { user } = useContext(AuthContext);
+  const handleSubmitSignOut = () => {
+    const token = localStorage.clear("token");
+    router.push("/login");
+  };
   const router = useRouter();
   const [addLocation, setAddLocation] = useState(false);
   const activeButtonaddLocation = () => {
@@ -35,7 +40,33 @@ export const UserHeader = (props) => {
   };
 
   const [checkoutButton, setCheckoutButton] = useState(false);
+  const [address, setAddress] = useState("");
+  const [saveFood, setSaveFood] = [];
   const activeButtonCheckoutButton = async () => {
+    // if (address.trim() === "") {
+    //   error("please enter your delivery address!");
+    //   return;
+    // }
+    const orderData = {
+      user: localStorage.getItem("token"),
+      foodOrderItems: saveFood,
+      address: address,
+      status: "PENDING",
+    };
+    try {
+      await fetch("http://localhost:8000/foodsOrder", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+      });
+      console.log("order saved", orderData);
+      localStorage.removeItem("savedFoods");
+      setSaveFood([]);
+    } catch (err) {
+      console.log("errorSaving", err);
+    }
     setCheckoutButton(!checkoutButton);
   };
   const [order, setOrder] = useState(false);
@@ -57,6 +88,7 @@ export const UserHeader = (props) => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("foodsCount");
       if (saved) setFoods(JSON.parse(saved));
+      setSaveFood();
       setShoppingCart();
     }
   }, []);
@@ -80,17 +112,21 @@ export const UserHeader = (props) => {
       setError("add address");
     }
   };
+  const totalPrice = foods.reduce(
+    (acc, cur) => acc + cur.foodPrice * cur.addFoodCount,
+    0
+  );
   useEffect(() => {
     setCart(true);
     activeButtonCart(true);
   }, []);
-useEffect(() => {
-  if (shoppingCart) {
-    document.body.style.overflow = "hidden";
-  } else {
-    document.body.style.overflow = "auto";
-  }
-}, [shoppingCart]);
+  useEffect(() => {
+    if (shoppingCart) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [shoppingCart]);
 
   return (
     <div className="w-[1440px] h-[172px] bg-[#18181B] flex justify-between items-center">
@@ -136,9 +172,12 @@ useEffect(() => {
       </div>
       {users && (
         <div className="fixed z-10 top-0 left-0 w-screen h-screen flex justify-center mt-30 ml-160">
-          <div className="min-w-[188px] h-[104px] bg-white rounded-md border-hidden flex flex-col items-center justify-center mr-22 gap-2">
-            <p className="text-black text-[19px] ">{token.email}</p>
-            <button className="bg-[#F4F4F5] w-20 h-9 text-[14px] flex justify-center items-center rounded-full cursor-pointer">
+          <div className="min-w-[188px] h-[104px] bg-white rounded-md border-hidden flex flex-col items-center justify-center mr-50 gap-2">
+            <p className="text-black text-[15px] font-bold m-2">{user.email}</p>
+            <button
+              className="bg-[#F4F4F5] w-20 h-9 text-[14px] flex justify-center items-center rounded-full cursor-pointer"
+              onClick={handleSubmitSignOut}
+            >
               Sign Out
             </button>
           </div>
@@ -188,7 +227,7 @@ useEffect(() => {
         </div>
       )}
       {shoppingCart && (
-        <div className="fixed  z-50 top-0 left-0 w-[1440px] flex justify-end items-center bg-[rgba(0,_0,_0,_0.5)]">
+        <div className="fixed  z-50 top-0 left-0 w-[1440px] flex justify-end items-center bg-[rgba(0,_0,_0,_0.5)] h-screen">
           <div className="w-[535px] h-[1024px] bg-[#404040] rounded-md gap-6 flex flex-col justify-center items-center overflow-y-auto">
             <div className="w-[471px] h-9 flex justify-center items-center">
               <ShoppingCartIcon />
@@ -259,7 +298,7 @@ useEffect(() => {
                           key={`foods-${index}`}
                           foodName={cur.foodName}
                           foodImgSrc={cur.foodImgSrc}
-                          foodPrice={cur.price}
+                          foodPrice={cur.foodPrice}
                           ingredients={cur.ingredients}
                           addFoodCount={cur.addFoodCount}
                           foodId={cur.foodId}
@@ -273,6 +312,8 @@ useEffect(() => {
                   <input
                     placeholder="Please share your complete address"
                     className="w-[439px] h-20 border rounded-md text-black m-3"
+                    value={address}
+                    onChange={(e) => setAddress({ address: e.target.value })}
                   />
                 </div>
                 <div className="w-[471px] h-[276px] bg-white rounded-2xl ">
@@ -311,37 +352,8 @@ useEffect(() => {
                       </div>
                     </div>
                   ) : (
-                    <div className="flex flex-col ml-3 gap-5">
-                      <div className="flex justify-between">
-                        <p className="text-[#71717A] w-[219px] h-7 text-4">
-                          Items{" "}
-                        </p>
-
-                        <p className="text-black font-bold w-[219px] h-7 text-4 ml-86">
-                          {foodPrice}
-                        </p>
-                      </div>
-                      <div className="flex justify-between">
-                        <p className="text-[#71717A] w-[219px] h-7 text-4">
-                          Shipping{" "}
-                        </p>
-                        <div className="flex justify-end w-[219px]">
-                          <p className="text-black font-bold w-[219px] h-7 text-4 ml-41">
-                            items
-                          </p>
-                        </div>
-                      </div>
-                      <hr className="bg-[#71717A] w-[439px]"></hr>
-                      <div className="flex justify-between">
-                        <p className="text-[#71717A] w-[219px] h-7 text-4">
-                          Shipping{" "}
-                        </p>
-                        <div className="flex justify-end w-[219px]">
-                          <p className="text-black font-bold w-[219px] h-7 text-4 ml-41">
-                            items
-                          </p>
-                        </div>
-                      </div>
+                    <div>
+                      <FoodPriceInf total={totalPrice} />
                     </div>
                   )}
                   {foods.length <= 0 ? (
@@ -364,19 +376,18 @@ useEffect(() => {
             )}
             {order && (
               <div
-                className="w-[471px] h-[832px] bg-white rounded-2xl flex items-center flex-col"
+                className="w-[471px] h-[832px] bg-white rounded-2xl flex flex-col"
                 onClick={() => {
                   setCart(false);
                 }}
               >
-                <p className="text-black text-[21px] w-[439px] h-[29px] mt-2">
-                  Orders History
-                </p>
+                <p className="text-[#71717A] text-[21px] m-2">Orders History</p>
                 <div className="grid gap-2">
                   {foods.map((cur, index) => (
                     <FoodNameOrder
                       key={`foods-${index}`}
                       foodName={cur.foodName}
+                      addFoodCount={cur.addFoodCount}
                     />
                   ))}
                 </div>

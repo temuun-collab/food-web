@@ -27,8 +27,6 @@ export const ProductListEdit = (props) => {
     const remove = addCarts.filter((item) => {
       return item.foodId !== foodId;
     });
-    console.log(addCarts, foodId, remove, "kk");
-
     localStorage.setItem("foodsCount", JSON.stringify(remove));
   };
   return (
@@ -75,8 +73,8 @@ export const ProductListEdit = (props) => {
               <NextIcon />
             </button>
           </div>
-          <div className="flex flex-col h-7">
-            <p className="text-[#09090B]  text-4 font-bold">{foodPrice}</p>
+          <div className="w-[200px] h-9 flex justify-end items-center">
+            <p className="text-[#09090B]  text-4 font-bold">{foodPrice} MNT</p>
           </div>
         </div>
       </div>

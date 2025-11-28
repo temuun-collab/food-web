@@ -2,7 +2,7 @@ import { FoodIcon } from "../downicon/FoodIcon";
 import { DateOrder } from "../_component/DateOrder";
 import { LocationIconOrder } from "../downicon/LocationIconOrder";
 export const FoodNameOrder = (props) => {
-  const { foodName, address } = props;
+  const { foodName, address, addFoodCount } = props;
   return (
     <div className="w-[439px] h-[138px] flex flex-col justify-center items-center gap-3">
       <div className="flex justify-between w-[439px]">
@@ -18,7 +18,7 @@ export const FoodNameOrder = (props) => {
         </div>
 
         <div className=" flex justify-center items-center">
-          <p className="text-[12px] text-[#71717A]">x1</p>
+          <p className="text-[12px] text-[#71717A]">{addFoodCount}x</p>
         </div>
       </div>
       <div className="flex justify-start w-[415px] h-4">

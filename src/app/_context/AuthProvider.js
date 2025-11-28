@@ -6,8 +6,8 @@ export const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState("");
-  // const [user, setUser] = useState(null);
-  // const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const getUser = async (token) => {
     try {
@@ -18,10 +18,9 @@ export const AuthProvider = ({ children }) => {
         },
       });
       const data = await rawData.json();
-      console.log(data, "kk");
 
-      // setUser(data.user);
-      // setLoading(false);
+      setUser(data.user);
+      setLoading(false);
     } catch (err) {
       console.log(err);
     }
@@ -32,7 +31,6 @@ export const AuthProvider = ({ children }) => {
       const token = localStorage.getItem("token");
       if (token) {
         getUser(token);
-        console.log(token, "lll");
 
         return setToken(token);
       }
@@ -41,7 +39,9 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ token }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ token, user }}>
+      {children}
+    </AuthContext.Provider>
   );
 };
 
