@@ -84,6 +84,13 @@ export const UserHeader = (props) => {
     setCart(true);
     activeButtonCart(true);
   }, []);
+useEffect(() => {
+  if (shoppingCart) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "auto";
+  }
+}, [shoppingCart]);
 
   return (
     <div className="w-[1440px] h-[172px] bg-[#18181B] flex justify-between items-center">
@@ -181,8 +188,8 @@ export const UserHeader = (props) => {
         </div>
       )}
       {shoppingCart && (
-        <div className="fixed  z-50 top-0 left-0 w-[1440px] h-screen flex justify-end items-center bg-[rgba(0,_0,_0,_0.5)]">
-          <div className="w-[535px] h-[1024px] bg-[#404040] rounded-md gap-6 flex flex-col justify-center items-center">
+        <div className="fixed  z-50 top-0 left-0 w-[1440px] flex justify-end items-center bg-[rgba(0,_0,_0,_0.5)]">
+          <div className="w-[535px] h-[1024px] bg-[#404040] rounded-md gap-6 flex flex-col justify-center items-center overflow-y-auto">
             <div className="w-[471px] h-9 flex justify-center items-center">
               <ShoppingCartIcon />
               <p className="text-[21px] font-bold  text-white w-[387px] h-7 ml-2">
