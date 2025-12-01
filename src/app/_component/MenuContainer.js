@@ -12,22 +12,22 @@ const options = {
 const backend_url = process.env.BACKEND_URL;
 export const MenuContainer = (props) => {
   const { category, foodName } = props;
-  const [categories, setCategories] = useState([]);
+  // const [categories, setCategories] = useState([]);
   const [foods, setFoods] = useState([]);
   const getData = async () => {
     const data = await fetch(`${backend_url}/foods`, options);
     const jsonData = await data.json();
     setFoods(jsonData);
   };
-  const foodsCategory = async () => {
-    const data = await fetch(`${backend_url}/foodsCategory`, options);
-    const jsonData = await data.json();
-    setCategories(jsonData);
-  };
+  // const foodsCategory = async () => {
+  //   const data = await fetch(`${backend_url}/foodsCategory`, options);
+  //   const jsonData = await data.json();
+  //   setCategories(jsonData);
+  // };
 
-  useEffect(() => {
-    foodsCategory();
-  }, []);
+  // useEffect(() => {
+  //   foodsCategory();
+  // }, []);
   useEffect(() => {
     getData();
   }, []);
