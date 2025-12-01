@@ -41,7 +41,6 @@ export const UserHeader = (props) => {
 
   const [checkoutButton, setCheckoutButton] = useState(false);
   const [address, setAddress] = useState("");
-  const [saveFood, setSaveFood] = [];
   const activeButtonCheckoutButton = async () => {
     // if (address.trim() === "") {
     //   error("please enter your delivery address!");
@@ -88,7 +87,7 @@ export const UserHeader = (props) => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("foodsCount");
       if (saved) setFoods(JSON.parse(saved));
-      setSaveFood();
+
       setShoppingCart();
     }
   }, []);
