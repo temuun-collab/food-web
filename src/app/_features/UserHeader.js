@@ -22,7 +22,7 @@ export const UserHeader = (props) => {
   // const {  } = props;
   const { user } = useContext(AuthContext);
   const handleSubmitSignOut = () => {
-    const token = localStorage.clear("token");
+    const token = localStorage.clear(user.id);
     router.push("/login");
   };
   const router = useRouter();
@@ -48,12 +48,12 @@ export const UserHeader = (props) => {
     // }
     const orderData = {
       user: localStorage.getItem("token"),
-      foodOrderItems: saveFood,
+
       address: address,
       status: "PENDING",
     };
     try {
-      await fetch(`${backend_url}foodsOrder`, {
+      await fetch(`${backend_url}/foodsOrder`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -61,8 +61,7 @@ export const UserHeader = (props) => {
         body: JSON.stringify(orderData),
       });
       console.log("order saved", orderData);
-      localStorage.removeItem("savedFoods");
-      setSaveFood([]);
+      const token = localStorage.clear("token");
     } catch (err) {
       console.log("errorSaving", err);
     }
