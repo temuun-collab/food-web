@@ -71,10 +71,16 @@ export const TableColumn = (props) => {
             </div>
           )}
         </div> */}
-        <select name="orders" id="orders">
-          <option value="PENDING">PENDING</option>
-          <option value="DELIVERED">DELIVERED</option>
-          <option value="CANCELLED">CANCELLED</option>
+        <select name="orders" id="orders" className="bg-white rounded-md m-2">
+          <option value="PENDING" className="text-[11px] text-black">
+            PENDING
+          </option>
+          <option value="DELIVERED" className="text-[11px] text-black">
+            DELIVERED
+          </option>
+          <option value="CANCELLED" className="text-[11px] text-black">
+            CANCELLED
+          </option>
         </select>
       </div>
     </div>
