@@ -17,7 +17,7 @@ import { FoodNameOrder } from "../_component/FoodNameOrder";
 import { Button } from "@/components/ui/button";
 import { AuthContext } from "../_context/AuthProvider";
 import { FoodPriceInf } from "../_component/FoodPriceInf";
-const backend_url= process.env.BACKEND_URL;
+const backend_url = process.env.BACKEND_URL;
 export const UserHeader = (props) => {
   // const {  } = props;
   const { user } = useContext(AuthContext);
@@ -41,7 +41,7 @@ export const UserHeader = (props) => {
 
   const [checkoutButton, setCheckoutButton] = useState(false);
   const [address, setAddress] = useState("");
-  const [saveFood, setSaveFood] = [];
+  // const [saveFood, setSaveFood] = [];
   const activeButtonCheckoutButton = async () => {
     if (address.trim() === "") {
       error("please enter your delivery address!");
@@ -49,7 +49,7 @@ export const UserHeader = (props) => {
     }
     const orderData = {
       user: localStorage.getItem("token"),
-      foodOrderItems: saveFood,
+      // foodOrderItems: saveFood,
       address: address,
       status: "PENDING",
     };
@@ -62,8 +62,8 @@ export const UserHeader = (props) => {
         body: JSON.stringify(orderData),
       });
       console.log("order saved", orderData);
-      localStorage.removeItem("savedFoods");
-      setSaveFood([]);
+      localStorage.removeItem("foodsCount");
+      // setSaveFood([]);
     } catch (err) {
       console.log("errorSaving", err);
     }
@@ -88,7 +88,7 @@ export const UserHeader = (props) => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("foodsCount");
       if (saved) setFoods(JSON.parse(saved));
-      setSaveFood();
+      // setSaveFood();
       setShoppingCart();
     }
   }, []);
